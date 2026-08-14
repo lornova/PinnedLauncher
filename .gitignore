@@ -1,0 +1,17 @@
+# Build outputs (future)
+/build/
+/out/
+*.obj
+*.pdb
+*.ilk
+*.exe
+*.dll
+
+# IDE / tooling
+.vs/
+.vscode/
+*.user
+
+# OS cruft
+Thumbs.db
+desktop.ini
