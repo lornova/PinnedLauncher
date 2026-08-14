@@ -29,6 +29,7 @@ Plain **Markdown**, rendered natively by GitHub/Gitea/VS Code — no build step.
 | [release-plan.md](release-plan.md) | How do 0.x previews progress to a stable 1.0? |
 | [implementation-plan.md](implementation-plan.md) | In what order is this built, phase by phase, release by release? |
 | [adr/](adr/) | Why did we decide what we decided? |
+| [spikes/](spikes/) | What evidence did each P0 spike produce, and what was decided from it? |
 | [../TODO.md](../TODO.md) | What must land before 1.0, and what is deferred after? |
 
 ## Conventions

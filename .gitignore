@@ -1,6 +1,10 @@
 # Build outputs (future)
 /build/
 /out/
+
+# Spike scratch outputs (regenerable via the spike's scripts)
+spikes/*/bin/
+spikes/*/out/
 *.obj
 *.pdb
 *.ilk
