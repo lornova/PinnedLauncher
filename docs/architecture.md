@@ -182,7 +182,12 @@ own AUMID, every launcher gets its **own** menu: the management app calls
 — `SetAppID(<proxy AUMID>)` → `BeginList` → `AddUserTasks(IObjectArray of IShellLink)`
 → `CommitList` — whenever a launcher is created or edited. Microsoft's docs confirm the
 key property we rely on: **tasks are available even when the application is not
-running**, which is exactly the state of a pure launcher pin.
+running**, which is exactly the state of a pure launcher pin. Verified in spike S-7
+(2026-08-15, [report](spikes/s7-jumplist.md)): a list committed for the proxy AUMID
+**before any pin existed** renders on the pin's jump list with no process of ours
+running — tasks above the system entries, separators included — clicked tasks invoke
+the target with their stored arguments, a re-commit replaces the menu with no
+staleness, and `DeleteList` removes it; full S_OK API trace on 26200.
 
 Planned tasks (each an `IShellLink` to our exe with arguments — arguments are mandatory
 for jump-list tasks):

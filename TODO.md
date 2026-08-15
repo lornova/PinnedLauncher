@@ -50,8 +50,15 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       `Full`. Side finding: fresh Start entries reach `shell:AppsFolder` only
       after an indexing lag — the pin guide must poll `ParseName` before
       deep-linking (management-window §5.3).
-- [ ] **S-7** Jump-list tasks render for a proxy AUMID with no process running (quick
-      sanity check).
+- [x] **S-7** Jump-list tasks — **completed 2026-08-15**
+      ([docs/spikes/s7-jumplist.md](docs/spikes/s7-jumplist.md)): tasks
+      committed for the proxy AUMID before any pin existed render on the
+      pin's jump list with no process running (separator + placement above
+      the system entries included); clicked tasks invoke the target with
+      their stored arguments; re-commit updates the menu with no staleness;
+      `DeleteList` removes it. Full S_OK API trace on 26200. Second datum
+      for the S-6 AppsFolder indexing lag: fresh entry parseable after 3 s
+      of polling.
 - [ ] **S-8** Evaluate `TaskbarManager.RequestPinAppListEntryAsync` / secondary-tile
       pin APIs (unpackaged-app support, our generated Start entries) — could replace
       the manual pin gesture entirely. LAF gating is servicing-dependent (token

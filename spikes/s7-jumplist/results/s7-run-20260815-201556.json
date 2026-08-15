@@ -1,0 +1,150 @@
+{
+  "run": "s7-jumplist",
+  "started": "2026-08-15T20:12:49.4474919+02:00",
+  "steps": [
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T20:12:49.4474919+02:00",
+      "data": {
+        "displayVersion": "25H2",
+        "taskLogLines": 1,
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "edition": "Professional",
+        "build": "26200.9168"
+      }
+    },
+    {
+      "id": "P0-commit",
+      "title": "Initial task list committed (pre-pin)",
+      "at": "2026-08-15T20:12:49.5226150+02:00",
+      "data": {
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx               hr=0x00000000\r\nCoCreateInstance(CDL)        hr=0x00000000\r\nSetAppID                     hr=0x00000000\r\nBeginList                    hr=0x00000000\r\nCoCreateInstance(collection) hr=0x00000000\r\nMakeTask(Alpha)              hr=0x00000000\r\nMakeTask(Beta)               hr=0x00000000\r\nMakeSeparator                hr=0x00000000\r\nMakeTask(Gamma)              hr=0x00000000\r\nQI(IObjectArray)             hr=0x00000000\r\nAddUserTasks                 hr=0x00000000\r\nCommitList                   hr=0x00000000"
+        }
+      }
+    },
+    {
+      "id": "P0-pin",
+      "title": "Baseline pin placed",
+      "at": "2026-08-15T20:13:03.6871184+02:00",
+      "data": {
+        "indexLatencySeconds": 3.0,
+        "wait": {
+          "detected": true,
+          "afterSeconds": 9.54
+        },
+        "appsFolderIndexed": true,
+        "deepLink": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHParseDisplayName        hr=0x00000000 (shell:AppsFolder\\PinnedLauncher.S7.JumpTest1)\r\nSHOpenFolderAndSelectItems hr=0x00000000"
+        }
+      }
+    },
+    {
+      "id": "Q1-render",
+      "title": "Q1: render with no process running",
+      "at": "2026-08-15T20:14:43.8987884+02:00",
+      "data": {
+        "aboveSystemEntries": "y",
+        "tasksShown": "y",
+        "aliveProcesses": 0,
+        "separatorShown": "y",
+        "header": "Attività"
+      }
+    },
+    {
+      "id": "Q2-invoke",
+      "title": "Q2: task invocation round-trip",
+      "at": "2026-08-15T20:15:08.0944657+02:00",
+      "data": {
+        "notes": "",
+        "wait": {
+          "afterSeconds": 15.11,
+          "detected": true,
+          "line": "ts=2026-08-15T20:14:58 pid=18464 exe=s7taskecho args=alpha",
+          "parsed": {
+            "args": "alpha",
+            "ts": "2026-08-15T20:14:58",
+            "exe": "s7taskecho",
+            "pid": "18464"
+          }
+        }
+      }
+    },
+    {
+      "id": "Q3-update",
+      "title": "Q3a: re-commit updates the menu",
+      "at": "2026-08-15T20:15:29.2175949+02:00",
+      "data": {
+        "notes": "",
+        "updated": "y",
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx               hr=0x00000000\r\nCoCreateInstance(CDL)        hr=0x00000000\r\nSetAppID                     hr=0x00000000\r\nBeginList                    hr=0x00000000\r\nCoCreateInstance(collection) hr=0x00000000\r\nMakeTask(Alpha v2)           hr=0x00000000\r\nMakeTask(Gamma)              hr=0x00000000\r\nQI(IObjectArray)             hr=0x00000000\r\nAddUserTasks                 hr=0x00000000\r\nCommitList                   hr=0x00000000"
+        }
+      }
+    },
+    {
+      "id": "Q3-invoke2",
+      "title": "Q3a: updated task invocation",
+      "at": "2026-08-15T20:15:36.9795631+02:00",
+      "data": {
+        "wait": {
+          "afterSeconds": 7.76,
+          "detected": true,
+          "line": "ts=2026-08-15T20:15:36 pid=5856 exe=s7taskecho args=alpha2",
+          "parsed": {
+            "args": "alpha2",
+            "ts": "2026-08-15T20:15:36",
+            "exe": "s7taskecho",
+            "pid": "5856"
+          }
+        }
+      }
+    },
+    {
+      "id": "Q3-delete",
+      "title": "Q3b: DeleteList removes the tasks",
+      "at": "2026-08-15T20:15:49.4329980+02:00",
+      "data": {
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx               hr=0x00000000\r\nCoCreateInstance(CDL)        hr=0x00000000\r\nDeleteList                   hr=0x00000000"
+        },
+        "tasksGone": "y"
+      }
+    },
+    {
+      "id": "late-observations",
+      "title": "Late / unexpected observations",
+      "at": "2026-08-15T20:15:56.1997018+02:00",
+      "data": {
+        "notes": ""
+      }
+    },
+    {
+      "id": "cleanup-unpin",
+      "title": "Unpin (programmatic, S-4 mechanism)",
+      "at": "2026-08-15T20:15:56.4413508+02:00",
+      "data": {
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHCreateItemFromParsingName hr=0x00000000 (C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S7 Spike\\S7 jumplist test.lnk)\r\nCoCreateInstance(StartMenuPin) hr=0x00000000\r\nRemoveFromList            hr=0x00000001"
+        },
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        }
+      }
+    }
+  ],
+  "machineBuild": "26200.9168"
+}

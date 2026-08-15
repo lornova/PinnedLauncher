@@ -104,7 +104,11 @@ Right-clicking the pin opens its **Jump List**, which carries launcher-specific 
 new launcher…* (UC-1), *Remove this launcher* (UC-3) — always; *Open target's folder*
 and *Run as administrator* only for target kinds where they apply (capability matrix,
 management-window §5.2). The system entries (launch, *Unpin from taskbar*) remain
-below, as on every pin.
+below, as on every pin. Mechanism verified in spike S-7 (2026-08-15,
+[report](spikes/s7-jumplist.md)): tasks committed for the proxy AUMID before any
+pin existed render above the system entries with no process of ours running,
+invoke the target with their stored arguments, update on re-commit, and vanish on
+`DeleteList`.
 
 ## Configuration & lifecycle use cases
 
