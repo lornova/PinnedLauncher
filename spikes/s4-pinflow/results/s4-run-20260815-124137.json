@@ -1,0 +1,209 @@
+{
+  "machineBuild": "26200.9168",
+  "steps": [
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T12:34:21.4616629+02:00",
+      "data": {
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "displayVersion": "25H2",
+        "edition": "Professional",
+        "build": "26200.9168",
+        "baselineBlob": [
+          "Claude.lnk",
+          "êRemote Desktop Connection.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "埕óVisual Studio Code.lnk"
+        ]
+      }
+    },
+    {
+      "id": "RA-pin",
+      "title": "Route A pin (Start)",
+      "at": "2026-08-15T12:35:44.1951445+02:00",
+      "data": {
+        "pinVisible": "y",
+        "wait": {
+          "detected": true,
+          "afterSeconds": 52.57
+        },
+        "signals": {
+          "taskbandBlob": false,
+          "pinFolder": true
+        },
+        "clicks": "3"
+      }
+    },
+    {
+      "id": "RA-unpin",
+      "title": "Route A unpin",
+      "at": "2026-08-15T12:35:55.2624612+02:00",
+      "data": {
+        "signals": {
+          "taskbandBlob": false,
+          "pinFolder": false
+        },
+        "wait": {
+          "detected": true,
+          "afterSeconds": 11.06
+        }
+      }
+    },
+    {
+      "id": "RB-pin",
+      "title": "Route B pin (Explorer)",
+      "at": "2026-08-15T12:37:06.6180720+02:00",
+      "data": {
+        "menuLocation": "I have disabled modern menus, so the option was already there in the context menu",
+        "wait": {
+          "detected": true,
+          "afterSeconds": 23.8
+        },
+        "signals": {
+          "taskbandBlob": true,
+          "pinFolder": true
+        }
+      }
+    },
+    {
+      "id": "RB-unpin",
+      "title": "Route B unpin",
+      "at": "2026-08-15T12:37:13.9938508+02:00",
+      "data": {
+        "signals": {
+          "taskbandBlob": false,
+          "pinFolder": false
+        },
+        "wait": {
+          "detected": true,
+          "afterSeconds": 7.36
+        }
+      }
+    },
+    {
+      "id": "RC-deeplink",
+      "title": "Route C deep-link (AppsFolder)",
+      "at": "2026-08-15T12:38:16.9770900+02:00",
+      "data": {
+        "opened": "a",
+        "wait": {
+          "detected": true,
+          "afterSeconds": 6.54
+        },
+        "pinOptionOffered": "y",
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHParseDisplayName        hr=0x00000000 (shell:AppsFolder\\PinnedLauncher.S4.PinTest1)\r\nSHOpenFolderAndSelectItems hr=0x00000000"
+        },
+        "signals": {
+          "taskbandBlob": false,
+          "pinFolder": true
+        }
+      }
+    },
+    {
+      "id": "RC-fs",
+      "title": "Route C deep-link (filesystem)",
+      "at": "2026-08-15T12:39:07.2325434+02:00",
+      "data": {
+        "opened": "Explorer opened on folder D:\\Progetti\\Launcher\\spikes\\s4-pinflow\\out with `S4-1 pin test` selected ",
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHParseDisplayName        hr=0x00000000 (D:\\Progetti\\Launcher\\spikes\\s4-pinflow\\out\\S4-1 pin test.lnk)\r\nSHOpenFolderAndSelectItems hr=0x00000000"
+        }
+      }
+    },
+    {
+      "id": "RD-drag",
+      "title": "Route D drag to taskbar",
+      "at": "2026-08-15T12:39:39.6707178+02:00",
+      "data": {
+        "notes": "",
+        "resultedInPin": true
+      }
+    },
+    {
+      "id": "Q3-setup",
+      "title": "Both S4 pins placed",
+      "at": "2026-08-15T12:40:06.5516468+02:00",
+      "data": {
+        "wait1": {
+          "detected": true,
+          "afterSeconds": 25.24
+        },
+        "wait2": {
+          "detected": true,
+          "afterSeconds": 1.64
+        }
+      }
+    },
+    {
+      "id": "Q3-start-menu-source",
+      "title": "RemoveFromList via start-menu source",
+      "at": "2026-08-15T12:40:33.1827397+02:00",
+      "data": {
+        "buttonGone": "y",
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        },
+        "s41": {
+          "taskbandBlob": false,
+          "pinFolder": false
+        },
+        "s42": {
+          "taskbandBlob": false,
+          "pinFolder": true
+        },
+        "isolationHeld": "y",
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHCreateItemFromParsingName hr=0x00000000 (C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S4 Spike\\S4-1 pin test.lnk)\r\nCoCreateInstance(StartMenuPin) hr=0x00000000\r\nRemoveFromList            hr=0x00000001"
+        }
+      }
+    },
+    {
+      "id": "Q3-repeat",
+      "title": "RemoveFromList stability repeat",
+      "at": "2026-08-15T12:41:09.1364993+02:00",
+      "data": {
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHCreateItemFromParsingName hr=0x00000000 (C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S4 Spike\\S4-1 pin test.lnk)\r\nCoCreateInstance(StartMenuPin) hr=0x00000000\r\nRemoveFromList            hr=0x00000001"
+        },
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        },
+        "buttonGone": "y",
+        "form": "start-menu source"
+      }
+    },
+    {
+      "id": "Q3-explorer-restart",
+      "title": "Explorer restart persistence",
+      "at": "2026-08-15T12:41:30.0473958+02:00",
+      "data": {
+        "s42": {
+          "taskbandBlob": false,
+          "pinFolder": true
+        },
+        "visual": "y",
+        "s41": {
+          "taskbandBlob": false,
+          "pinFolder": false
+        }
+      }
+    }
+  ],
+  "started": "2026-08-15T12:34:21.4616629+02:00",
+  "run": "s4-pinflow"
+}

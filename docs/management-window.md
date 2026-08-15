@@ -156,11 +156,14 @@ two-phase watcher (§5.3) observes the completed re-pin.
 
 ### 5.3 Pin guide (UC-1a)
 
-`TaskDialogIndirect` with numbered instructions ("Open Start → All apps → right-click
-*'{name}'* → Pin to taskbar"), a button that opens the Start menu on the entry where
-possible, and a *"pin detected"* confirmation when the watcher (the same best-effort
-heuristic as §5.1 — presented as a detection, never as certainty) sees the pinned copy
-appear. In **edit mode** (re-pin, §5.2) the guide is a two-phase state machine with
+`TaskDialogIndirect` with numbered instructions, a button that opens the Apps view
+with the launcher's entry **pre-selected** (`SHOpenFolderAndSelectItems` on
+`shell:AppsFolder\<AUMID>` — S-4-verified, [spike report](spikes/s4-pinflow.md) §7)
+so the residual gesture is one right-click → Pin to taskbar (drag-to-taskbar and the
+Start → All apps route are documented fallbacks), and a *"pin detected"* confirmation
+when the watcher (the same best-effort heuristic as §5.1 — presented as a detection,
+never as certainty; S-4 measured the pinned-copy signal as synchronous on every
+route) sees the pinned copy appear. In **edit mode** (re-pin, §5.2) the guide is a two-phase state machine with
 explicit unpin instructions first: watch for the old pinned copy's **disappearance**,
 then for the new pin's **reappearance** — the mere presence of the pre-existing pin
 never satisfies it (an icon-only edit would otherwise "succeed" instantly without the
@@ -204,5 +207,8 @@ the window follows the system. No AUMID scheme setting — it is fixed by design
 
 1. Installed-apps picker source: enumerate `shell:AppsFolder` (covers Win32 + packaged
    uniformly) — spike-verify item ordering/perf with large app lists.
-2. Can the pin guide deep-link Start to the entry (`shell:AppsFolder` selection) or
-   only open the folder? Cosmetic; resolve during S-4.
+2. ~~Can the pin guide deep-link Start to the entry (`shell:AppsFolder` selection) or
+   only open the folder? Cosmetic; resolve during S-4.~~ **Resolved by S-4
+   (2026-08-15)**: yes — `SHOpenFolderAndSelectItems` on `shell:AppsFolder\<AUMID>`
+   opens the Apps view with the entry pre-selected
+   ([spike report](spikes/s4-pinflow.md) §6.1/§7).

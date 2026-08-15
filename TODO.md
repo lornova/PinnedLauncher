@@ -16,13 +16,21 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       R-6) vs certificate (cost); document the choice.
 
 ### Spikes (blocking architecture finalization — phase P0)
-- [ ] **S-3** AUMID non-merge + identity propagation across app types, on every
-      supported build family (C-2) — the
-      go/no-go for the whole design (ADR-0006 gains a "verified" note or the project
-      pivots).
-- [ ] **S-4** Pin/unpin lifecycle: guided pin flow UX; pin-detection reliability
-      (`User Pinned\TaskBar` heuristic); can Start be deep-linked to the entry?
-      `IStartMenuPinnedList::RemoveFromList` for programmatic unpin on Win11.
+- [x] **S-3** AUMID non-merge + identity propagation — **GO recorded 2026-08-15**
+      ([docs/spikes/s3-aumid.md](docs/spikes/s3-aumid.md)): verified on family
+      26200, all flavor-B cases pass; flavor-A pins to plain Win32 exes merge via
+      target-path association → flavor B mandatory there. ADR-0006 annotated.
+      Families 26100/28000 stay as non-blocking confirmation runs (first entries
+      of the P2 qualification matrix); 22631 descoped (out of support
+      2026-11-10).
+- [x] **S-4** Pin/unpin lifecycle — **completed 2026-08-15**
+      ([docs/spikes/s4-pinflow.md](docs/spikes/s4-pinflow.md)): pin guide
+      deep-links via `SHOpenFolderAndSelectItems` on `shell:AppsFolder\<AUMID>`
+      (entry pre-selected; drag-to-taskbar and Start routes as fallbacks); the
+      `User Pinned\TaskBar` copy is a synchronous, route-independent signal
+      (Taskband blob is lazy — never use for live detection);
+      `RemoveFromList` validated → UC-3 unpins programmatically (S_FALSE on
+      success; gesture fallback kept).
 - [ ] **S-5** Whether icon/name edits to the *source* shortcut propagate to an
       existing pin without a re-pin (icon cache + `SHChangeNotify`) — best-effort
       enhancement only; includes badge recomposition.

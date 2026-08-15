@@ -41,8 +41,11 @@ taskbar button (distinct AUMID); the pin is unaffected.
 *Remove* in the management window performs the **unpin first**: programmatically via
 [`IStartMenuPinnedList::RemoveFromList`](https://learn.microsoft.com/windows/win32/api/shobjidl/nf-shobjidl-istartmenupinnedlist-removefromlist)
 — the documented API for unpinning an application-installed shortcut before deleting
-it — if spike S-4 validates its Windows 11 behavior, otherwise by guiding the user
-gesture. Only after the unpin is observed does it delete the launcher's jump list
+it — **S-4-validated on Windows 11** (pass the Start-menu source `.lnk`; immediate,
+isolated, persistent across Explorer restarts; returns S_FALSE on success, so check
+`SUCCEEDED(hr)` — [spike report](spikes/s4-pinflow.md) §7). The guided user gesture
+remains the fallback if the call fails. Only after the unpin is observed does it
+delete the launcher's jump list
 (`DeleteList`), proxy shortcut, generated icon and config entry — ordered to avoid
 dead pins. If the unpin is deferred, the launcher is marked *pending removal* instead.
 (During **full uninstall**, UC-13, the entry is not deleted but transitions to the
