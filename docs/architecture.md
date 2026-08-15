@@ -149,7 +149,10 @@ flowchart TB
   integrity and applies elevation to the *resolved target* via `runas`, so the UAC
   prompt names the target. The proxy **never executes config-derived commands while
   itself elevated** — if started elevated (e.g. native Ctrl+Shift+click on the pin),
-  it refuses and points the user at the supported per-launcher elevation (UC-6, S-6).
+  it refuses and points the user at the supported per-launcher elevation (UC-6;
+  verified in spike S-6, 2026-08-15, [report](spikes/s6-elevation.md) — one UAC
+  naming the target, every elevated-start vector detected and refused; guard
+  predicate for P1: refuse iff the token's elevation type is `Full`).
 - **Management window** — the project's only built UI: a *normal* Win32 window (opened
   on demand from its Start entry or the pins' jump-list tasks; single-instance; no
   background presence), **never** anything positioned over the taskbar. Add / edit /

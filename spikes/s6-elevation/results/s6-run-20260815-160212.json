@@ -1,0 +1,295 @@
+{
+  "run": "s6-elevation",
+  "started": "2026-08-15T15:54:49.2366438+02:00",
+  "steps": [
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T15:54:49.2366438+02:00",
+      "data": {
+        "proxyLogLines": 2,
+        "displayVersion": "25H2",
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "edition": "Professional",
+        "build": "26200.9168",
+        "targetLogLines": 1
+      }
+    },
+    {
+      "id": "P0-pin",
+      "title": "Baseline pin placed",
+      "at": "2026-08-15T15:54:56.8377734+02:00",
+      "data": {
+        "indexLatencySeconds": 0.0,
+        "wait": {
+          "detected": true,
+          "afterSeconds": 6.37
+        },
+        "appsFolderIndexed": true,
+        "deepLink": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHParseDisplayName        hr=0x00000000 (shell:AppsFolder\\PinnedLauncher.S6.ElevTest1)\r\nSHOpenFolderAndSelectItems hr=0x00000000"
+        }
+      }
+    },
+    {
+      "id": "SA-launch",
+      "title": "S-A: supported elevated launch, accepted",
+      "at": "2026-08-15T15:56:53.1769477+02:00",
+      "data": {
+        "targetOwnButton": "y",
+        "transientProxyButton": "s",
+        "promptCount": "1",
+        "uacName": "s6target.exe",
+        "target": {
+          "afterSeconds": 0.0,
+          "detected": true,
+          "line": "ts=2026-08-15T15:55:39 pid=9136 exe=s6target elevated=1 type=Full integrity=High rid=0x3000 action=RUNNING detail=0",
+          "parsed": {
+            "elevated": "1",
+            "exe": "s6target",
+            "action": "RUNNING",
+            "ts": "2026-08-15T15:55:39",
+            "type": "Full",
+            "integrity": "High",
+            "detail": "0",
+            "rid": "0x3000",
+            "pid": "9136"
+          }
+        },
+        "proxy": {
+          "afterSeconds": 42.34,
+          "detected": true,
+          "line": "ts=2026-08-15T15:55:38 pid=19516 exe=s6proxy elevated=0 type=Limited integrity=Medium rid=0x2000 action=LAUNCHED detail=0",
+          "parsed": {
+            "elevated": "0",
+            "exe": "s6proxy",
+            "action": "LAUNCHED",
+            "ts": "2026-08-15T15:55:38",
+            "type": "Limited",
+            "integrity": "Medium",
+            "detail": "0",
+            "rid": "0x2000",
+            "pid": "19516"
+          }
+        }
+      }
+    },
+    {
+      "id": "SB-cancel",
+      "title": "S-B: supported launch, UAC cancelled",
+      "at": "2026-08-15T15:57:20.8822908+02:00",
+      "data": {
+        "lingering": "n",
+        "errorUi": "n",
+        "proxy": {
+          "afterSeconds": 17.6,
+          "detected": true,
+          "line": "ts=2026-08-15T15:57:10 pid=20232 exe=s6proxy elevated=0 type=Limited integrity=Medium rid=0x2000 action=CANCELLED detail=1223",
+          "parsed": {
+            "elevated": "0",
+            "exe": "s6proxy",
+            "action": "CANCELLED",
+            "ts": "2026-08-15T15:57:10",
+            "type": "Limited",
+            "integrity": "Medium",
+            "detail": "1223",
+            "rid": "0x2000",
+            "pid": "20232"
+          }
+        }
+      }
+    },
+    {
+      "id": "SC-signed",
+      "title": "S-C: signed-target UAC naming (cancelled)",
+      "at": "2026-08-15T15:58:33.0903245+02:00",
+      "data": {
+        "uacName": "Editor del Registro di sistema",
+        "publisher": "Autore verificato: Microsoft Windows",
+        "proxy": {
+          "afterSeconds": 38.82,
+          "detected": true,
+          "line": "ts=2026-08-15T15:57:59 pid=9696 exe=s6proxy elevated=0 type=Limited integrity=Medium rid=0x2000 action=CANCELLED detail=1223",
+          "parsed": {
+            "elevated": "0",
+            "exe": "s6proxy",
+            "action": "CANCELLED",
+            "ts": "2026-08-15T15:57:59",
+            "type": "Limited",
+            "integrity": "Medium",
+            "detail": "1223",
+            "rid": "0x2000",
+            "pid": "9696"
+          }
+        }
+      }
+    },
+    {
+      "id": "SD-ctrlshift",
+      "title": "S-D: Ctrl+Shift+click guard",
+      "at": "2026-08-15T16:00:25.2319543+02:00",
+      "data": {
+        "lingering": "n",
+        "targetLaunched": "n",
+        "targetLogGrew": false,
+        "refusalShown": "y",
+        "uacName": "s6proxy.exe",
+        "proxy": {
+          "afterSeconds": 38.25,
+          "detected": true,
+          "line": "ts=2026-08-15T15:59:11 pid=8996 exe=s6proxy elevated=1 type=Full integrity=High rid=0x3000 action=REFUSED detail=0",
+          "parsed": {
+            "elevated": "1",
+            "exe": "s6proxy",
+            "action": "REFUSED",
+            "ts": "2026-08-15T15:59:11",
+            "type": "Full",
+            "integrity": "High",
+            "detail": "0",
+            "rid": "0x3000",
+            "pid": "8996"
+          }
+        }
+      }
+    },
+    {
+      "id": "SE-jumplist",
+      "title": "S-E: jump-list run-as-admin guard",
+      "at": "2026-08-15T16:01:47.2595851+02:00",
+      "data": {
+        "refusalShown": "y",
+        "offered": "y",
+        "targetLogGrew": false,
+        "proxy": {
+          "afterSeconds": 8.43,
+          "detected": true,
+          "line": "ts=2026-08-15T16:01:41 pid=3824 exe=s6proxy elevated=1 type=Full integrity=High rid=0x3000 action=REFUSED detail=0",
+          "parsed": {
+            "elevated": "1",
+            "exe": "s6proxy",
+            "action": "REFUSED",
+            "ts": "2026-08-15T16:01:41",
+            "type": "Full",
+            "integrity": "High",
+            "detail": "0",
+            "rid": "0x3000",
+            "pid": "3824"
+          }
+        }
+      }
+    },
+    {
+      "id": "SF-runas",
+      "title": "S-F: programmatic RunAs guard",
+      "at": "2026-08-15T16:02:05.0921251+02:00",
+      "data": {
+        "refusalShown": "y",
+        "targetLogGrew": false,
+        "proxy": {
+          "afterSeconds": 0.22,
+          "detected": true,
+          "line": "ts=2026-08-15T16:01:50 pid=19644 exe=s6proxy elevated=1 type=Full integrity=High rid=0x3000 action=REFUSED detail=0",
+          "parsed": {
+            "elevated": "1",
+            "exe": "s6proxy",
+            "action": "REFUSED",
+            "ts": "2026-08-15T16:01:50",
+            "type": "Full",
+            "integrity": "High",
+            "detail": "0",
+            "rid": "0x3000",
+            "pid": "19644"
+          }
+        }
+      }
+    },
+    {
+      "id": "token-matrix",
+      "title": "Q3: token facts per scenario",
+      "at": "2026-08-15T16:02:05.1174161+02:00",
+      "data": {
+        "rows": [
+          {
+            "scenario": "S-A proxy",
+            "exe": "s6proxy",
+            "elevated": "0",
+            "type": "Limited",
+            "integrity": "Medium",
+            "action": "LAUNCHED"
+          },
+          {
+            "scenario": "S-A target",
+            "exe": "s6target",
+            "elevated": "1",
+            "type": "Full",
+            "integrity": "High",
+            "action": "RUNNING"
+          },
+          {
+            "scenario": "S-B proxy",
+            "exe": "s6proxy",
+            "elevated": "0",
+            "type": "Limited",
+            "integrity": "Medium",
+            "action": "CANCELLED"
+          },
+          {
+            "scenario": "S-D proxy",
+            "exe": "s6proxy",
+            "elevated": "1",
+            "type": "Full",
+            "integrity": "High",
+            "action": "REFUSED"
+          },
+          {
+            "scenario": "S-E proxy",
+            "exe": "s6proxy",
+            "elevated": "1",
+            "type": "Full",
+            "integrity": "High",
+            "action": "REFUSED"
+          },
+          {
+            "scenario": "S-F proxy",
+            "exe": "s6proxy",
+            "elevated": "1",
+            "type": "Full",
+            "integrity": "High",
+            "action": "REFUSED"
+          }
+        ]
+      }
+    },
+    {
+      "id": "late-observations",
+      "title": "Late / unexpected observations",
+      "at": "2026-08-15T16:02:12.1034081+02:00",
+      "data": {
+        "notes": ""
+      }
+    },
+    {
+      "id": "cleanup-unpin",
+      "title": "Unpin (programmatic, S-4 mechanism)",
+      "at": "2026-08-15T16:02:12.2466490+02:00",
+      "data": {
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHCreateItemFromParsingName hr=0x00000000 (C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S6 Spike\\S6 elevation test.lnk)\r\nCoCreateInstance(StartMenuPin) hr=0x00000000\r\nRemoveFromList            hr=0x00000001"
+        },
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        }
+      }
+    }
+  ],
+  "machineBuild": "26200.9168"
+}

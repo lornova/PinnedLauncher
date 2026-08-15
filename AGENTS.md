@@ -9,8 +9,8 @@ as its **own separate button** (the pin never expands in place). License: GPL-3.
 
 **Current status: documentation only — no code yet.** Spike **S-3 passed — GO
 recorded 2026-08-15** ([docs/spikes/s3-aumid.md](docs/spikes/s3-aumid.md));
-ADR-0006 carries the verification annotation. P0.2 spikes in progress: S-4 and
-S-5 complete, S-6..S-9 open. See
+ADR-0006 carries the verification annotation. P0.2 spikes in progress: S-4..S-6
+complete, S-7..S-9 open. See
 [docs/implementation-plan.md](docs/implementation-plan.md) for phases P0–P3 and
 the release train.
 

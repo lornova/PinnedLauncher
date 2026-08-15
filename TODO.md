@@ -39,10 +39,17 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       regenerate-and-re-pin guide stands alone. Icon artifacts keep a stable
       path (the pinned copy references it forever; heals next session);
       `IShellLink` icon edits preserve the AUMID.
-- [ ] **S-6** Elevation semantics: medium-IL proxy applies `runas` to the resolved
-      target (UAC names the target; no double UAC, no lingering button); verify the
-      confused-deputy guard — an elevated-started proxy must detect it and refuse
-      config-driven launch (UC-6).
+- [x] **S-6** Elevation semantics — **completed 2026-08-15**
+      ([docs/spikes/s6-elevation.md](docs/spikes/s6-elevation.md)): medium-IL
+      proxy + `runas` on the resolved target verified — one UAC naming the
+      target, target elevated as its own button, silent `ERROR_CANCELLED` on
+      decline, no lingering button (R-4 cleared). All three elevated-start
+      vectors (Ctrl+Shift+click; jump-list *run as administrator*, which the
+      shell does offer; programmatic `RunAs`) detected and refused before the
+      config is read. Guard predicate for P1: refuse iff elevation type
+      `Full`. Side finding: fresh Start entries reach `shell:AppsFolder` only
+      after an indexing lag — the pin guide must poll `ParseName` before
+      deep-linking (management-window §5.3).
 - [ ] **S-7** Jump-list tasks render for a proxy AUMID with no process running (quick
       sanity check).
 - [ ] **S-8** Evaluate `TaskbarManager.RequestPinAppListEntryAsync` / secondary-tile

@@ -72,7 +72,11 @@ On a launcher-only pin every unmodified click starts the shortcut.
   UC-5, and the jump-list *Run as administrator* task, UC-7; applicable target kinds
   only per the capability matrix). Implementation rule: the **medium-integrity proxy
   invokes the `runas` verb on the resolved target**, so the UAC prompt names the
-  actual program being elevated — never the proxy.
+  actual program being elevated — never the proxy. Verified in spike S-6
+  (2026-08-15, [report](spikes/s6-elevation.md)): exactly one UAC prompt naming the
+  resolved target (file name for an unsigned target, verified display name for a
+  signed one), the target runs at high IL as its own taskbar button, and a declined
+  prompt ends in a silent `ERROR_CANCELLED` exit — no error UI, no lingering button.
 - The shell's native **Ctrl+Shift+click** on a pin elevates the pin's target — i.e.
   *the proxy itself*. An elevated generic proxy that then executes instructions read
   from user-writable config would be a **confused deputy** (a medium-integrity process
@@ -80,7 +84,10 @@ On a launcher-only pin every unmodified click starts the shortcut.
   under a prompt that names our trusted proxy). This path is therefore **not
   supported**: a proxy that finds itself started elevated refuses to consume the
   config and explains how to use the supported elevation instead (behavior and
-  detection verified in spike S-6).
+  detection verified in spike S-6, 2026-08-15: Ctrl+Shift+click, the jump list's own
+  *run as administrator* on the entry name — which the shell does offer — and the
+  programmatic `runas` verb all yield a full-token high-IL proxy, detected and
+  refused before the config is read; [report](spikes/s6-elevation.md)).
 - Middle-click / Shift+click are natively equivalent to a plain click on a
   launcher-only pin (they re-launch). Whether a launch yields a *new instance* is
   ultimately the target's decision — single-instance applications will refuse; the

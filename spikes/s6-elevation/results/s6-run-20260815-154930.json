@@ -1,0 +1,42 @@
+{
+  "run": "s6-elevation",
+  "started": "2026-08-15T15:48:56.9381271+02:00",
+  "steps": [
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T15:48:56.9381271+02:00",
+      "data": {
+        "proxyLogLines": 1,
+        "displayVersion": "25H2",
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "edition": "Professional",
+        "build": "26200.9168",
+        "targetLogLines": 0
+      }
+    },
+    {
+      "id": "P0-pin",
+      "title": "Baseline pin placed",
+      "at": "2026-08-15T15:49:24.2091832+02:00",
+      "data": {
+        "deepLink": {
+          "exitCode": 1,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHParseDisplayName        hr=0x80070002 (shell:AppsFolder\\PinnedLauncher.S6.ElevTest1)"
+        },
+        "wait": {
+          "afterSeconds": null,
+          "detected": false,
+          "skipped": true
+        }
+      }
+    }
+  ],
+  "machineBuild": "26200.9168"
+}

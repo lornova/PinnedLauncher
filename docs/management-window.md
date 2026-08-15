@@ -163,7 +163,11 @@ so the residual gesture is one right-click → Pin to taskbar (drag-to-taskbar a
 Start → All apps route are documented fallbacks), and a *"pin detected"* confirmation
 when the watcher (the same best-effort heuristic as §5.1 — presented as a detection,
 never as certainty; S-4 measured the pinned-copy signal as synchronous on every
-route) sees the pinned copy appear. In **edit mode** (re-pin, §5.2) the guide is a two-phase state machine with
+route) sees the pinned copy appear. One timing constraint (S-6, 2026-08-15,
+[report](spikes/s6-elevation.md) §7): a freshly created Start entry is **not
+immediately parseable** in `shell:AppsFolder` (observed `0x80070002` ~30 s after
+install) — the guide polls `ParseName(<AUMID>)` until the entry appears before
+offering the deep-link button, presenting the manual routes meanwhile. In **edit mode** (re-pin, §5.2) the guide is a two-phase state machine with
 explicit unpin instructions first: watch for the old pinned copy's **disappearance**,
 then for the new pin's **reappearance** — the mere presence of the pre-existing pin
 never satisfies it (an icon-only edit would otherwise "succeed" instantly without the
