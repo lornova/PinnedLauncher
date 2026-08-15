@@ -9,8 +9,10 @@ as its **own separate button** (the pin never expands in place). License: GPL-3.
 
 **Current status: documentation only — no code yet.** Spike **S-3 passed — GO
 recorded 2026-08-15** ([docs/spikes/s3-aumid.md](docs/spikes/s3-aumid.md));
-ADR-0006 carries the verification annotation. P0.2 spikes in progress: S-4..S-7
-and S-9 complete, S-8 open. See
+ADR-0006 carries the verification annotation. P0.2 spikes complete: S-4..S-9 all
+carry accepted outcomes (S-8 closed 2026-08-15: API-first pin with gesture
+fallback, posture configurable); the P0.2 `shell:AppsFolder` enumeration check
+remains open. See
 [docs/implementation-plan.md](docs/implementation-plan.md) for phases P0–P3 and
 the release train.
 

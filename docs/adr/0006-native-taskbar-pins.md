@@ -10,6 +10,13 @@
   target exe, however launched) → flavor B mandatory for that target class.
   Families 26100/28000 remain as non-blocking confirmation runs; 22631 descoped
   (out of support 2026-11-10).
+- Amended 2026-08-15: S-8 resolved the one-time-pin cost — from the unpackaged
+  helper assuming the launcher's AUMID, `RequestPinCurrentAppAsync` pins the
+  generated Start entry via one consent dialog, and the landed pin is equivalent
+  to a gesture pin (S-4 + S-9 oracles); `RequestPinAppListEntryAsync` and the
+  secondary-tile APIs are closed to unpackaged callers (`0x8000000E`). The flow
+  is **API-first with the gesture as fallback**, posture user-configurable — see
+  [docs/spikes/s8-pinapi.md](../spikes/s8-pinapi.md) §7.
 - Date: 2026-08-13
 - Related: [ADR-0005](0005-overlay-strip-with-flyout-fallback.md) — the rejected
   overlay/flyout alternative

@@ -23,10 +23,11 @@ a one-time "Pin to taskbar", see UC-1a). A new launcher can also be started from
 existing launcher's right-click menu (UC-7 → *Add a new launcher…*).
 
 ### UC-1a — Pin a launcher (one-time)
-No documented API silently pins another app, so the app generates the proxy shortcut
-and guides the user through a single native *Pin to taskbar* per launcher (spike S-8
-evaluates whether `TaskbarManager`'s consent-gated request APIs can replace the
-gesture). Thereafter the pin behaves like any other.
+No documented API silently pins another app, so every pin is a one-time user consent:
+by default a **consent dialog** (spike S-8 validated `RequestPinCurrentAppAsync` from
+a helper assuming the launcher's AUMID), with the guided native *Pin to taskbar*
+gesture as fallback — the posture is a pin-flow setting (architecture §5).
+Thereafter the pin behaves like any other.
 
 ### UC-2 — Launch a target (the core use case)
 Single left-click on a launcher icon starts the target exactly as the Start menu would

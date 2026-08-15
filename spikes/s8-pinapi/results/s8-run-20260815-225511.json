@@ -1,0 +1,276 @@
+{
+  "steps": [
+    {
+      "id": "sweep",
+      "title": "Preflight hygiene sweep",
+      "at": "2026-08-15T22:53:40.8308706+02:00",
+      "data": {
+        "pinCount": 5,
+        "leftovers": []
+      }
+    },
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T22:53:40.8739871+02:00",
+      "data": {
+        "build": "26200.9168",
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "displayVersion": "25H2",
+        "edition": "Professional",
+        "postKb5074105Expected": true
+      }
+    },
+    {
+      "id": "Q2-probe",
+      "title": "Q2: support + LAF/servicing probes",
+      "at": "2026-08-15T22:53:40.9676707+02:00",
+      "data": {
+        "lafProbeConsistentWithServicing": true,
+        "run": {
+          "outFile": "s8pin-probe-20260815-225340875.txt",
+          "exitCode": 0,
+          "facts": {
+            "aumid": "PinnedLauncher.Test.S8PinApi1",
+            "command": "probe",
+            "setProcessAumid": "0x00000000",
+            "desktopSupport": "true",
+            "getDefault": "ok",
+            "isSupported": "true",
+            "isPinningAllowed": "false",
+            "lafRegKeyPresent": "true",
+            "lafSeedQuery": "0x00000002",
+            "lafTokenRequired": "false",
+            "lafTryUnlockStatus": "AvailableWithoutToken",
+            "isCurrentAppPinned": "false"
+          }
+        }
+      }
+    },
+    {
+      "id": "Q1A-pin-current",
+      "title": "Q1 route A: RequestPinCurrentAppAsync",
+      "at": "2026-08-15T22:54:18.4998863+02:00",
+      "data": {
+        "dialogAppeared": "y",
+        "dialogName": "S8 pin test",
+        "indexLatencySeconds": 0.0,
+        "run": {
+          "outFile": "s8pin-pin-current-20260815-225340971.txt",
+          "exitCode": 0,
+          "facts": {
+            "aumid": "PinnedLauncher.Test.S8PinApi1",
+            "command": "pin-current",
+            "setProcessAumid": "0x00000000",
+            "desktopSupport": "true",
+            "getDefault": "ok",
+            "isSupported": "true",
+            "isPinningAllowed": "false",
+            "foregroundAfterMs": "0",
+            "foregroundReached": "true",
+            "isPinningAllowedForeground": "true",
+            "isCurrentAppPinnedBefore": "false",
+            "requestPinCurrentApp": "true",
+            "isCurrentAppPinnedAfter": "true"
+          }
+        },
+        "appsFolderIndexed": true,
+        "dialogShowedTargetIcon": "y"
+      }
+    },
+    {
+      "id": "Q3-pinfolder",
+      "title": "Q3: S-4 pin-folder signal",
+      "at": "2026-08-15T22:54:18.5172512+02:00",
+      "data": {
+        "aumidMatches": true,
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        },
+        "copyAumid": "PinnedLauncher.Test.S8PinApi1"
+      }
+    },
+    {
+      "id": "Q3-uia",
+      "title": "Q3: S-9 UIA oracle on the API pin",
+      "at": "2026-08-15T22:54:23.4607373+02:00",
+      "data": {
+        "element": {
+          "state": "0x100000",
+          "rect": "611,864,655,912",
+          "className": "Taskbar.TaskListButtonAutomationPeer",
+          "automationId": "Appid: PinnedLauncher.Test.S8PinApi1",
+          "controlType": "50000",
+          "offscreen": "0",
+          "name": "S8 pin test bloccato"
+        },
+        "visualOneButton": "y",
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.1,
+          "buttons": [
+            {
+              "state": "0x100000",
+              "rect": "611,864,655,912",
+              "className": "Taskbar.TaskListButtonAutomationPeer",
+              "automationId": "Appid: PinnedLauncher.Test.S8PinApi1",
+              "controlType": "50000",
+              "offscreen": "0",
+              "name": "S8 pin test bloccato"
+            }
+          ]
+        },
+        "aumidIsAutomationId": true
+      }
+    },
+    {
+      "id": "Q3-click",
+      "title": "Q3: click equivalence (launch from the API pin)",
+      "at": "2026-08-15T22:54:42.2647579+02:00",
+      "data": {
+        "pinChangedDuringRun": [],
+        "visualSeparateButton": "n",
+        "charmapLaunched": true,
+        "pinElementDuring": {
+          "state": "0x100000",
+          "rect": "611,864,655,912",
+          "className": "Taskbar.TaskListButtonAutomationPeer",
+          "automationId": "Appid: PinnedLauncher.Test.S8PinApi1",
+          "controlType": "50000",
+          "offscreen": "0",
+          "name": "S8 pin test bloccato"
+        }
+      }
+    },
+    {
+      "id": "Q1A-repeat",
+      "title": "Q1 route A: repeat request on an existing pin",
+      "at": "2026-08-15T22:54:56.0500263+02:00",
+      "data": {
+        "dialogAppeared": "y",
+        "run": {
+          "outFile": "s8pin-pin-current-20260815-225442266.txt",
+          "exitCode": 0,
+          "facts": {
+            "aumid": "PinnedLauncher.Test.S8PinApi1",
+            "command": "pin-current",
+            "setProcessAumid": "0x00000000",
+            "desktopSupport": "true",
+            "getDefault": "ok",
+            "isSupported": "true",
+            "isPinningAllowed": "false",
+            "foregroundAfterMs": "0",
+            "foregroundReached": "true",
+            "isPinningAllowedForeground": "true",
+            "isCurrentAppPinnedBefore": "true",
+            "requestPinCurrentApp": "true",
+            "isCurrentAppPinnedAfter": "true"
+          }
+        }
+      }
+    },
+    {
+      "id": "Q3-teardown",
+      "title": "Q3: programmatic unpin of the API pin",
+      "at": "2026-08-15T22:54:56.2873484+02:00",
+      "data": {
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHCreateItemFromParsingName hr=0x00000000 (C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S8 Spike\\S8 pin test.lnk)\r\nCoCreateInstance(StartMenuPin) hr=0x00000000\r\nRemoveFromList            hr=0x00000001"
+        },
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        },
+        "uiaGone": true
+      }
+    },
+    {
+      "id": "Q1B-own-entry",
+      "title": "Q1 route B: AppListEntry for our unpackaged AUMID",
+      "at": "2026-08-15T22:54:56.3325781+02:00",
+      "data": {
+        "run": {
+          "outFile": "s8pin-pin-entry-20260815-225456288.txt",
+          "exitCode": 0,
+          "facts": {
+            "aumid": "PinnedLauncher.Test.S8PinApi1",
+            "command": "pin-entry",
+            "setProcessAumid": "0x00000000",
+            "appInfoError": "0x80070490 Impossibile trovare elemento.",
+            "appListEntryAcquired": "false"
+          }
+        }
+      }
+    },
+    {
+      "id": "Q1B-control-entry",
+      "title": "Q1 route B: AppListEntry for a packaged control AUMID",
+      "at": "2026-08-15T22:55:07.0227683+02:00",
+      "data": {
+        "dialogAppeared": "n",
+        "controlAumid": "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App",
+        "run": {
+          "outFile": "s8pin-pin-entry-20260815-225456373.txt",
+          "exitCode": 0,
+          "facts": {
+            "aumid": "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App",
+            "command": "pin-entry",
+            "setProcessAumid": "0x00000000",
+            "appInfoFound": "true",
+            "appInfoAumid": "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App",
+            "appInfoDisplayName": "Calcolatrice",
+            "packagePresent": "true",
+            "appListEntryCount": "1",
+            "appListEntryAcquired": "true",
+            "foregroundAfterMs": "0",
+            "foregroundReached": "true",
+            "requestPinAppListEntryError": "0x8000000E Caller must have package identity"
+          }
+        },
+        "cleanupConfirmed": null
+      }
+    },
+    {
+      "id": "Q1C-tile",
+      "title": "Q1 route C: SecondaryTile attempts",
+      "at": "2026-08-15T22:55:07.1129801+02:00",
+      "data": {
+        "run": {
+          "outFile": "s8pin-pin-tile-20260815-225507024.txt",
+          "exitCode": 0,
+          "facts": {
+            "aumid": "PinnedLauncher.Test.S8PinApi1",
+            "command": "pin-tile",
+            "setProcessAumid": "0x00000000",
+            "tileConstruct": "ok",
+            "tileConfigure": "ok",
+            "foregroundAfterMs": "0",
+            "foregroundReached": "true",
+            "requestPinSecondaryTileError": "0x8000000E Caller must have package identity",
+            "isSecondaryTilePinnedError": "0x8000000E Caller must have package identity",
+            "tryUnpinSecondaryTileError": "0x8000000E Caller must have package identity"
+          }
+        }
+      }
+    },
+    {
+      "id": "late-observations",
+      "title": "Late / unexpected observations",
+      "at": "2026-08-15T22:55:11.2813952+02:00",
+      "data": {
+        "notes": ""
+      }
+    }
+  ],
+  "run": "s8-pinapi",
+  "machineBuild": "26200.9168",
+  "started": "2026-08-15T22:53:40.8308706+02:00"
+}

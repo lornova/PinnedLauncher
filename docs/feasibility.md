@@ -47,13 +47,16 @@ These are the facts that bound every possible design:
    ([taskbar layout XML / policy](https://learn.microsoft.com/windows/configuration/taskbar/pinned-apps))
    is provisioning-time, periodically re-applied, and not usable as an interactive
    consumer mechanism.
-   **Open evaluation:** `TaskbarManager` also exposes consent-gated request APIs
-   *beyond* the current app —
+   **Resolved (spike S-8, 2026-08-15,
+   [spikes/s8-pinapi.md](spikes/s8-pinapi.md)):** from an unpackaged desktop app,
+   `RequestPinCurrentAppAsync` pins a generated Start entry when the process assumes
+   that entry's explicit AUMID — one consent dialog carrying the launcher's name and
+   icon, and the landed pin is equivalent to a gesture pin. The *beyond-current-app*
+   APIs are closed to unpackaged callers:
    [`RequestPinAppListEntryAsync`](https://learn.microsoft.com/uwp/api/windows.ui.shell.taskbarmanager)
-   and secondary-tile pin/unpin (the latter still Limited-Access-gated as of the study
-   date). Whether these work from an unpackaged desktop app and can target the
-   launcher's generated Start entries is unresolved → **spike S-8**; until it answers,
-   the design assumes the manual pin gesture.
+   and the secondary-tile trio fail with `0x8000000E` *caller must have package
+   identity*. The design pins **API-first with the guided gesture as fallback**, the
+   posture user-configurable.
 
 3. **Pin placement is fixed to the pinned zone.** Pins live in the single
    centered/left group; their order is user- or policy-controlled; nothing places a
@@ -194,8 +197,8 @@ the alternatives simply don't exist here. Plain Win32 + COM; **no WinUI, no .NET
 (NF-1, C-1). Full detail in [architecture.md](architecture.md); decision in
 [ADR-0006](adr/0006-native-taskbar-pins.md).
 
-The two honest costs: a **one-time manual pin** per launcher (assumed manual pending
-spike S-8's evaluation of `TaskbarManager.RequestPinAppListEntryAsync`), and
+The two honest costs: a **one-time pin consent** per launcher (a consent dialog via
+the S-8-validated `RequestPinCurrentAppAsync` route, guided gesture as fallback), and
 dependence on **AUMID grouping behavior** staying as documented across builds — which
 is why this verdict, and ADR-0006, are **conditional on spike S-3**.
 

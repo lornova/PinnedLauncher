@@ -156,6 +156,13 @@ two-phase watcher (§5.3) observes the completed re-pin.
 
 ### 5.3 Pin guide (UC-1a)
 
+Per S-8 ([spike report](spikes/s8-pinapi.md) §7) the guide is **API-first** (pin-flow
+setting: *API-first* default / *API-only* / *manual*): when the S-8 runtime detection
+allows it, a short-lived helper assumes the launcher's AUMID and calls
+`RequestPinCurrentAppAsync` from the guide's foreground interaction — gated on
+`IsCurrentAppPinnedAsync` (S-8 saw the dialog re-appear on already-pinned requests) —
+so the consent dialog replaces the gesture, and the watcher below confirms the landed
+pin identically. On unavailable/denied, or in *manual* mode, the gesture flow:
 `TaskDialogIndirect` with numbered instructions, a button that opens the Apps view
 with the launcher's entry **pre-selected** (`SHOpenFolderAndSelectItems` on
 `shell:AppsFolder\<AUMID>` — S-4-verified, [spike report](spikes/s4-pinflow.md) §7)

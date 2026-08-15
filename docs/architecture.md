@@ -245,14 +245,21 @@ over-taskbar renderer and the live shell-geometry/z-order monitor — **do not e
 this architecture**. Robustness comes from delegating placement and rendering to the
 OS's own pinning.
 
-## 5. Setup flow (one pin gesture per launcher — manual baseline, S-8 may lift it)
+## 5. Setup flow (one pin consent per launcher — API-first, gesture fallback; S-8)
 
-No documented API *silently* pins an arbitrary app. `TaskbarManager` does expose
-consent-gated request APIs beyond the calling app — notably
-`RequestPinAppListEntryAsync` — whose applicability to our generated Start entries
-from an unpackaged app is unresolved and evaluated in **spike S-8**
-([feasibility §3](feasibility.md#3-platform-constraints-from-official-documentation)).
-Until S-8 proves otherwise, the plan assumes the manual gesture:
+No documented API *silently* pins an arbitrary app — every path is user-consented.
+**Spike S-8** ([spikes/s8-pinapi.md](spikes/s8-pinapi.md), 2026-08-15) resolved the
+evaluation: from our unpackaged exe, `TaskbarManager.RequestPinCurrentAppAsync`
+pins a generated Start entry when the requesting process assumes that entry's
+**explicit AUMID** — one consent dialog carrying the launcher's name and icon, and
+the landed pin is equivalent to a gesture pin on both the S-4 and S-9 oracles
+(S-4's `RemoveFromList` unpins it, too). The alternatives are closed:
+`RequestPinAppListEntryAsync` and the secondary-tile APIs fail with `0x8000000E`
+*caller must have package identity*. The flow is therefore **API-first with the
+guided gesture as fallback**, and the posture is a runtime **pin-flow setting**
+(*API-first* default / *API-only* / *manual*) — the project rule inaugurated by
+S-8: wherever Windows offers alternative mechanisms, the choice is a setting, so
+behavior can be re-tuned if Windows changes without waiting for a release.
 
 1. User adds a launcher in the management UI (picks the target; we read its icon + name)
    — or picks *Add a new launcher…* from any existing launcher pin's jump list.
@@ -262,10 +269,16 @@ Until S-8 proves otherwise, the plan assumes the manual gesture:
    location** (`%LOCALAPPDATA%\PinnedLauncher\bin` — release-plan §1): the app installs itself
    there on first run, so pins never point into a transient folder and zip upgrades
    overwrite in place without breaking them.
-3. The pin is applied **once**: baseline flow is the guided user gesture (right-click
-   the Start entry → *Pin to taskbar*); whether a consent-gated programmatic request
-   (`RequestPinAppListEntryAsync`) can replace the gesture for our generated entries
-   is exactly **spike S-8's question** — the flow upgrades if S-8 answers yes.
+3. The pin is applied **once**, per the configured pin-flow mode. Default
+   (*API-first*): a short-lived helper assumes the launcher's AUMID and calls
+   `RequestPinCurrentAppAsync` — launched from a **foreground** interaction of the
+   management window (so activation rights transfer; a background-launched helper
+   just blinks on the taskbar), **gated on `IsCurrentAppPinnedAsync`** (S-8
+   observed the consent dialog re-appearing on an already-pinned request, contra
+   documented idempotency), and only when the S-8 runtime detection (§8.1: marker
+   interface, foreground `IsPinningAllowed`, LAF registry probe) says the request
+   can succeed. On unavailable/denied — or in *manual* mode — the guided gesture
+   (right-click the Start entry → *Pin to taskbar*).
 4. Thereafter: reorder by native drag within the pinned group; edit name/icon from the
    pin's own jump list (§4.2). **Removal is ordered to minimize dead pins:** unpin
    *first* — programmatic (`IStartMenuPinnedList::RemoveFromList`, if S-4 validates
@@ -280,9 +293,9 @@ Until S-8 proves otherwise, the plan assumes the manual gesture:
    explicit end-of-summary confirmation that no launcher pins remain — never by
    watcher state alone.
 
-This one-time gesture per launcher — manual for now, possibly a consent dialog if S-8
-lands — is the price of using the real, robust taskbar mechanism instead of drawing
-our own bar.
+This one-time consent per launcher — a dialog on the API path, a gesture on the
+fallback — is the price of using the real, robust taskbar mechanism instead of
+drawing our own bar.
 
 ## 6. Requirements coverage at a glance
 
@@ -323,8 +336,8 @@ Modern C++ (C++20+, Q-1), Win32 + COM (`IShellLink`, `IPropertyStore`,
 `IApplicationActivationManager` — a plain Win32 COM interface, created with
 `CLSCTX_LOCAL_SERVER` from the short-lived proxy as its documentation requires, so
 packaged-app activation survives the proxy's immediate exit). C++/WinRT only where a
-needed API is genuinely WinRT-shaped (`TaskbarManager` evaluation in S-8; theme
-queries).
+needed API is genuinely WinRT-shaped (the S-8-adopted `TaskbarManager` pin request;
+theme queries).
 No custom GPU rendering is required (the OS draws the pins); the only UI is the
 management window — plain Win32 + common controls, MVP-structured
 ([management-window.md](management-window.md), ADR-0010). **No WinUI** (ADR-0004/0010),
@@ -341,8 +354,8 @@ Windows 11 release or edition.**
 | `IShellLink`, `IPropertyStore` + AUMID properties, `ICustomDestinationList` (incl. `DeleteList`), `IStartMenuPinnedList`, `SetCurrentProcessExplicitAppUserModelID` | Windows 7 | present on every Windows 11 build |
 | `IApplicationActivationManager` | Windows 8 | present on every Windows 11 build |
 | `IShellItemImageFactory`, `TaskDialogIndirect`, `Shell_NotifyIcon` | Windows Vista or earlier | present on every Windows 11 build |
-| `Windows.UI.Shell.TaskbarManager` (incl. `RequestPinAppListEntryAsync`; S-8) | Windows 10 1709, build 16299 | present on every Windows 11 build; desktop-app support probed at runtime via the `ITaskbarManagerDesktopAppSupportStatics` marker interface |
-| Taskbar-pin **Limited Access Feature unlock removal** | servicing-gated: [KB5074105](https://support.microsoft.com/topic/85bd25de-894a-43eb-a19b-9a59d10f194b) (builds 26100.7705 / 26200.7705, Jan 2026) | the **only** build-dependent behavior: on builds without the update the LAF token is still required. Microsoft documents a runtime registry probe (`…\LimitedAccessFeatures\com.microsoft.windows.taskbar.pin`), so S-8's path degrades detectably at runtime — no static build floor needed |
+| `Windows.UI.Shell.TaskbarManager` (`RequestPinCurrentAppAsync` — the S-8-adopted route; `RequestPinAppListEntryAsync`/secondary tiles are closed to unpackaged callers, `0x8000000E`) | Windows 10 1709, build 16299 | present on every Windows 11 build; desktop-app support probed at runtime via the `ITaskbarManagerDesktopAppSupportStatics` marker interface — **verified by S-8 on 26200.9168** (marker present, request lands, pin equivalent to a gesture pin) |
+| Taskbar-pin **Limited Access Feature unlock removal** | servicing-gated: [KB5074105](https://support.microsoft.com/topic/85bd25de-894a-43eb-a19b-9a59d10f194b) (builds 26100.7705 / 26200.7705, Jan 2026) | the **only** build-dependent behavior: on builds without the update the LAF token is still required. Microsoft documents a runtime registry probe (`…\LimitedAccessFeatures\com.microsoft.windows.taskbar.pin`), so the S-8 path degrades detectably at runtime — no static build floor needed. **S-8 verified the probe on a post-KB build** (seed value absent ⇒ no token; token-less `TryUnlockFeature` agrees: `AvailableWithoutToken`); the pre-KB state is adopted on the documented semantics, the gesture fallback covering any surprise |
 
 Consequence: any in-support Windows 11 build on any desktop-taskbar edition **that
 meets C-2's preconditions** (interactive desktop session; unpackaged Win32 execution

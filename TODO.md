@@ -59,11 +59,22 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       `DeleteList` removes it. Full S_OK API trace on 26200. Second datum
       for the S-6 AppsFolder indexing lag: fresh entry parseable after 3 s
       of polling.
-- [ ] **S-8** Evaluate `TaskbarManager.RequestPinAppListEntryAsync` / secondary-tile
-      pin APIs (unpackaged-app support, our generated Start entries) — could replace
-      the manual pin gesture entirely. LAF gating is servicing-dependent (token
-      required below KB5074105) and runtime-detectable via Microsoft's documented
-      registry probe (architecture §8.1).
+- [x] **S-8** `TaskbarManager` pin APIs — **completed 2026-08-15**
+      ([docs/spikes/s8-pinapi.md](docs/spikes/s8-pinapi.md)):
+      `RequestPinCurrentAppAsync` works from our unpackaged exe against a
+      generated Start entry when the helper assumes the launcher's AUMID —
+      the consent dialog carries the launcher's name/icon, the landed pin
+      is equivalent to a gesture pin on the S-4 and S-9 oracles, and S-4's
+      `RemoveFromList` unpins it. `RequestPinAppListEntryAsync` and the
+      secondary-tile APIs: `0x8000000E` *caller must have package
+      identity* (closed to us). LAF runtime detection verified post-KB
+      (registry probe + `TryUnlockFeature` agree: no token). Caveats:
+      gate every request on `IsCurrentAppPinnedAsync` (the dialog
+      re-appears on already-pinned requests, contra docs); the helper
+      needs foreground-activation rights (background launch just blinks);
+      `IsPinningAllowed` is foreground-sensitive. Decision: pin guide goes
+      **API-first with gesture fallback**, posture exposed as a pin-flow
+      setting (API-first / API-only / manual).
 - [x] **S-9** UIA test oracle + hygiene — **completed 2026-08-15**
       ([docs/spikes/s9-uiaoracle.md](docs/spikes/s9-uiaoracle.md)): taskbar
       buttons expose `AutomationId = "Appid: <AUMID>"` (pin) vs

@@ -1,0 +1,60 @@
+{
+  "steps": [
+    {
+      "id": "sweep",
+      "title": "Preflight hygiene sweep",
+      "at": "2026-08-15T22:53:05.7041652+02:00",
+      "data": {
+        "pinCount": 5,
+        "leftovers": []
+      }
+    },
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T22:53:05.8082981+02:00",
+      "data": {
+        "build": "26200.9168",
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "displayVersion": "25H2",
+        "edition": "Professional",
+        "postKb5074105Expected": true
+      }
+    },
+    {
+      "id": "Q2-probe",
+      "title": "Q2: support + LAF/servicing probes",
+      "at": "2026-08-15T22:53:06.0283080+02:00",
+      "data": {
+        "lafProbeConsistentWithServicing": true,
+        "run": {
+          "outFile": "s8pin-probe-20260815-225305813.txt",
+          "exitCode": 0,
+          "facts": {
+            "aumid": "PinnedLauncher.Test.S8PinApi1",
+            "command": "probe",
+            "setProcessAumid": "0x00000000",
+            "desktopSupport": "true",
+            "getDefault": "ok",
+            "isSupported": "true",
+            "isPinningAllowed": "false",
+            "lafRegKeyPresent": "true",
+            "lafSeedQuery": "0x00000002",
+            "lafTokenRequired": "false",
+            "lafTryUnlockStatus": "AvailableWithoutToken",
+            "isCurrentAppPinned": "false"
+          }
+        }
+      }
+    }
+  ],
+  "run": "s8-pinapi",
+  "machineBuild": "26200.9168",
+  "started": "2026-08-15T22:53:05.7041652+02:00"
+}

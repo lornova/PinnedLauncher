@@ -77,7 +77,7 @@ not asserted:
 |---|---|---|
 | **0.1.0** | Repo public. Skeleton: CMake, verification script, Catch2+trompeloeil wired, coverage reporting, **version stamping from Git tag** (release-plan §2.1). Core: config store + domain model (`LauncherTarget` hierarchy) | NF-1/2/12 foundations, Q-1..Q-6 scaffolding |
 | **0.2.0** | Icon service: shell icon extraction, badge compositing (corner/size rules), multi-size `.ico` writer; golden-file tests | F-4 |
-| **0.3.0** | Shortcut+AUMID manager, windowless proxy exe, launch service, **stable install location** (first-run copy to `%LOCALAPPDATA%`, release-plan §1 — pins must never reference a transient folder); **first end-to-end launcher works**, pinned via the S-8-decided flow (manual gesture as the baseline); dogfooding starts | F-1/2/3/5/6, UC-1a |
+| **0.3.0** | Shortcut+AUMID manager, windowless proxy exe, launch service, **stable install location** (first-run copy to `%LOCALAPPDATA%`, release-plan §1 — pins must never reference a transient folder); **first end-to-end launcher works**, pinned via the S-8-decided flow (API-first with gesture fallback, pin-flow setting); dogfooding starts | F-1/2/3/5/6, UC-1a |
 | **0.4.0** | Management window: main list + add/edit + pin guide (presenters, UIA-driven QTs) | F-5 (UI), F-8 basics, UC-1/3/5 |
 | **0.5.0** | Jump-list publisher: per-launcher tasks menu, wired to the already-shipping management window CLI | F-9, UC-7 |
 | **0.6.0** | Settings page, config import/export, en/it/hu resources, accessibility pass, clean uninstall | F-10, NF-10/11, UC-10/13 |
