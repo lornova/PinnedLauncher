@@ -220,11 +220,17 @@ this design must not rely on (same no-fragile-internals principle as ADR-0003).
 - **Guaranteed path (default):** edit = regenerate the Start-menu proxy `.lnk` and its
   icon, then guide the user through a quick re-pin (unpin → pin), reusing the
   pin-guide dialog. Supported end-to-end; costs one extra gesture.
-- **Best-effort enhancement (spike S-5):** investigate whether updating the *source*
-  shortcut plus `SHChangeNotify`/icon-cache refresh propagates to the pin without a
-  re-pin gesture. If S-5 finds a reliable, low-risk mechanism it is layered on top;
-  otherwise the guaranteed path stands alone. In no outcome does undocumented pin
-  storage become the primary mechanism.
+- **Best-effort enhancement — rejected (spike S-5, 2026-08-15,
+  [report](spikes/s5-editprop.md)):** no documented nudge propagates a source-shortcut
+  edit or an in-place icon rewrite to an existing pin — every `SHChangeNotify` form
+  tried (item/dir/image/assoc, including on the pinned copy) and `ie4uinit -show`
+  all failed; only an Explorer restart refreshes, proving the staleness is
+  icon-cache-level rather than pin-baked. The guaranteed path stands alone. Two
+  rules the spike fixed for the icon service: regenerated icon artifacts keep a
+  **stable path** (the pinned copy references it forever — an in-place rewrite
+  heals at the next Explorer session, a renamed file would break the pin's icon
+  permanently), and the `IShellLink`-based edit path preserves the AUMID property
+  store (verified).
 
 The two hardest, most update-fragile modules of the rejected overlay design — the
 over-taskbar renderer and the live shell-geometry/z-order monitor — **do not exist in

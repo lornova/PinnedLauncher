@@ -31,9 +31,14 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       (Taskband blob is lazy — never use for live detection);
       `RemoveFromList` validated → UC-3 unpins programmatically (S_FALSE on
       success; gesture fallback kept).
-- [ ] **S-5** Whether icon/name edits to the *source* shortcut propagate to an
-      existing pin without a re-pin (icon cache + `SHChangeNotify`) — best-effort
-      enhancement only; includes badge recomposition.
+- [x] **S-5** Icon/name edit propagation — **completed 2026-08-15**
+      ([docs/spikes/s5-editprop.md](docs/spikes/s5-editprop.md)): no documented
+      nudge (every `SHChangeNotify` form, `ie4uinit -show`) propagates in-place
+      icon rewrites or source renames to an existing pin — only an Explorer
+      restart does → best-effort enhancement **rejected**; the §4.2
+      regenerate-and-re-pin guide stands alone. Icon artifacts keep a stable
+      path (the pinned copy references it forever; heals next session);
+      `IShellLink` icon edits preserve the AUMID.
 - [ ] **S-6** Elevation semantics: medium-IL proxy applies `runas` to the resolved
       target (UAC names the target; no double UAC, no lingering button); verify the
       confused-deputy guard — an elevated-started proxy must detect it and refuse
@@ -93,4 +98,6 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       (hosted runners are free for public repos — no infrastructure of ours; value:
       clean-machine validation + badge).
 - [ ] Icon freshness watcher: detect target icon changes proactively rather than on
-      launch/edit (extends S-5 outcome).
+      launch/edit. Bounded by the S-5 outcome: regeneration alone refreshes a pin
+      only at the next Explorer session (no live nudge exists), so the watcher's
+      value is early regeneration plus, at most, prompting a re-pin.

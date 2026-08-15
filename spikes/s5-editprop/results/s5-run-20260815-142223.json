@@ -1,0 +1,209 @@
+{
+  "run": "s5-editprop",
+  "started": "2026-08-15T14:15:23.2535301+02:00",
+  "steps": [
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T14:15:23.2535301+02:00",
+      "data": {
+        "displayVersion": "25H2",
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "edition": "Professional",
+        "build": "26200.9168"
+      }
+    },
+    {
+      "id": "P0-pin",
+      "title": "Baseline pin placed",
+      "at": "2026-08-15T14:16:14.4775339+02:00",
+      "data": {
+        "wait": {
+          "detected": true,
+          "afterSeconds": 22.71
+        },
+        "startVariantA": "y",
+        "buttonVariantA": "y"
+      }
+    },
+    {
+      "id": "Q1-N0",
+      "title": "control - no nudge, just observe",
+      "at": "2026-08-15T14:17:41.1628515+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N1",
+      "title": "SHCNE_UPDATEITEM on the Start-menu source .lnk",
+      "at": "2026-08-15T14:18:20.1815585+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_UPDATEITEM (SHCNF_PATHW|FLUSH) item=C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S5 Spike\\S5 edit test.lnk"
+        },
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N2",
+      "title": "SHCNE_UPDATEITEM on the .ico file itself",
+      "at": "2026-08-15T14:18:41.6372025+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_UPDATEITEM (SHCNF_PATHW|FLUSH) item=D:\\Progetti\\Launcher\\spikes\\s5-editprop\\out\\s5-icon.ico"
+        },
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N3",
+      "title": "SHCNE_UPDATEDIR on the Start-menu spike folder",
+      "at": "2026-08-15T14:18:56.5027138+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_UPDATEDIR (SHCNF_PATHW|FLUSH) dir=C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S5 Spike"
+        },
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N4",
+      "title": "SHCNE_UPDATEITEM on the User Pinned\\TaskBar copy",
+      "at": "2026-08-15T14:19:09.9125820+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_UPDATEITEM (SHCNF_PATHW|FLUSH) item=C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Internet Explorer\\Quick Launch\\User Pinned\\TaskBar\\S5 edit test.lnk"
+        },
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N5",
+      "title": "SHCNE_UPDATEIMAGE index -1 (global icon-cache imagelist)",
+      "at": "2026-08-15T14:19:18.2213447+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_UPDATEIMAGE (SHCNF_DWORD|FLUSH) index=-1"
+        },
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N6",
+      "title": "SHCNE_ASSOCCHANGED (global association/icon rebuild)",
+      "at": "2026-08-15T14:19:32.1645784+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_ASSOCCHANGED (SHCNF_IDLIST|FLUSH)"
+        },
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N7",
+      "title": "ie4uinit.exe -show (shipped icon-cache refresh utility)",
+      "at": "2026-08-15T14:19:43.9586074+02:00",
+      "data": {
+        "flipped": "n",
+        "tool": {
+          "exitCode": 0,
+          "output": ""
+        },
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-N8",
+      "title": "Explorer restart (diagnostic upper bound - NEVER a product mechanism)",
+      "at": "2026-08-15T14:20:03.1157851+02:00",
+      "data": {
+        "flipped": "y",
+        "tool": null,
+        "notes": ""
+      }
+    },
+    {
+      "id": "Q1-start-entry",
+      "title": "Start entry state after the ladder",
+      "at": "2026-08-15T14:20:18.1217068+02:00",
+      "data": {
+        "startShowsB": "y",
+        "flippedAt": "N8"
+      }
+    },
+    {
+      "id": "Q2-name",
+      "title": "Source rename propagation",
+      "at": "2026-08-15T14:21:09.4178031+02:00",
+      "data": {
+        "startEntryRenamed": "n",
+        "tooltipBefore": "S4 edit test",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_RENAMEITEM (SHCNF_PATHW|FLUSH) old=C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S5 Spike\\S5 edit test.lnk new=C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S5 Spike\\S5 renamed test.lnk"
+        },
+        "after": "S5 edit test"
+      }
+    },
+    {
+      "id": "Q3-versioned-path",
+      "title": "Versioned icon path on the source",
+      "at": "2026-08-15T14:22:13.9753585+02:00",
+      "data": {
+        "pinChanged": "n",
+        "startChanged": "n",
+        "snapshotBefore": "both blue circle with little red square in the corner",
+        "tool": {
+          "exitCode": 0,
+          "output": "sent SHCNE_UPDATEITEM (SHCNF_PATHW|FLUSH) item=C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S5 Spike\\S5 edit test.lnk"
+        },
+        "aumidPreserved": true
+      }
+    },
+    {
+      "id": "late-observations",
+      "title": "Delayed propagation observations",
+      "at": "2026-08-15T14:22:23.7911679+02:00",
+      "data": {
+        "notes": ""
+      }
+    },
+    {
+      "id": "cleanup-unpin",
+      "title": "Unpin (programmatic, S-4 mechanism)",
+      "at": "2026-08-15T14:22:23.9425100+02:00",
+      "data": {
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHCreateItemFromParsingName hr=0x00000000 (C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S5 Spike\\S5 edit test.lnk)\r\nCoCreateInstance(StartMenuPin) hr=0x00000000\r\nRemoveFromList            hr=0x00000001"
+        },
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        }
+      }
+    }
+  ],
+  "machineBuild": "26200.9168"
+}

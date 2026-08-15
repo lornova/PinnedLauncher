@@ -63,7 +63,8 @@ working directory, "run as administrator" flag, "run minimized/maximized" flag.
 Reached from the pin's own right-click menu (UC-7 → *Change name or icon…*) or from the
 management window. Name/icon changes regenerate the proxy artifacts; because updating
 an **existing pin** has no documented API, the flow guides a quick unpin → re-pin
-(architecture §4.2; spike S-5 may soften this to automatic propagation).
+(architecture §4.2; spike S-5, 2026-08-15: no documented propagation mechanism
+exists — the guided re-pin is the flow, not a fallback).
 
 ### UC-6 — Modified launch
 On a launcher-only pin every unmodified click starts the shortcut.
