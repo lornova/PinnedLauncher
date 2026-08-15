@@ -1,0 +1,186 @@
+{
+  "run": "s9-uiaoracle",
+  "started": "2026-08-15T21:33:38.2285849+02:00",
+  "steps": [
+    {
+      "id": "sweep",
+      "title": "Q3: preflight hygiene sweep",
+      "at": "2026-08-15T21:33:38.2285849+02:00",
+      "data": {
+        "pinCount": 5,
+        "leftovers": []
+      }
+    },
+    {
+      "id": "env",
+      "title": "Environment and baseline",
+      "at": "2026-08-15T21:33:38.2867038+02:00",
+      "data": {
+        "displayVersion": "25H2",
+        "baselineFolder": [
+          "Claude.lnk",
+          "File Explorer.lnk",
+          "Google Chrome.lnk",
+          "Remote Desktop Connection.lnk",
+          "Visual Studio Code.lnk"
+        ],
+        "taskbarGlomLevel": 1,
+        "edition": "Professional",
+        "build": "26200.9168"
+      }
+    },
+    {
+      "id": "P0-pin",
+      "title": "Baseline pin placed",
+      "at": "2026-08-15T21:33:50.9062416+02:00",
+      "data": {
+        "indexLatencySeconds": 3.1,
+        "wait": {
+          "detected": true,
+          "afterSeconds": 8.14
+        },
+        "appsFolderIndexed": true,
+        "deepLink": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHParseDisplayName        hr=0x00000000 (shell:AppsFolder\\PinnedLauncher.Test.S9Oracle1)\r\nSHOpenFolderAndSelectItems hr=0x00000000"
+        }
+      }
+    },
+    {
+      "id": "Q1-pin-alone",
+      "title": "Q1: pin-alone element",
+      "at": "2026-08-15T21:34:47.1200870+02:00",
+      "data": {
+        "wait": {
+          "detected": false,
+          "buttons": {
+            "controlType": "50000",
+            "offscreen": "0",
+            "automationId": "Appid: PinnedLauncher.Test.S9Oracle1",
+            "rect": "1070,1392,1114,1440",
+            "className": "Taskbar.TaskListButtonAutomationPeer",
+            "state": "0x100000",
+            "name": "S9 pin test bloccato"
+          }
+        },
+        "visualOneButton": "y",
+        "aumidIsAutomationId": true,
+        "element": {
+          "controlType": "50000",
+          "offscreen": "0",
+          "automationId": "Appid: PinnedLauncher.Test.S9Oracle1",
+          "rect": "1070,1392,1114,1440",
+          "className": "Taskbar.TaskListButtonAutomationPeer",
+          "state": "0x100000",
+          "name": "S9 pin test bloccato"
+        }
+      }
+    },
+    {
+      "id": "Q2-collision",
+      "title": "Q2: same-named running target",
+      "at": "2026-08-15T21:35:17.5411184+02:00",
+      "data": {
+        "pinElement": {
+          "controlType": "50000",
+          "offscreen": "0",
+          "automationId": "Appid: PinnedLauncher.Test.S9Oracle1",
+          "rect": "1070,1392,1114,1440",
+          "className": "Taskbar.TaskListButtonAutomationPeer",
+          "state": "0x100000",
+          "name": "S9 pin test bloccato"
+        },
+        "wait": {
+          "buttons": [
+            {
+              "controlType": "50000",
+              "offscreen": "0",
+              "automationId": "Appid: PinnedLauncher.Test.S9Oracle1",
+              "rect": "1070,1392,1114,1440",
+              "className": "Taskbar.TaskListButtonAutomationPeer",
+              "state": "0x100000",
+              "name": "S9 pin test bloccato"
+            },
+            {
+              "controlType": "50000",
+              "offscreen": "0",
+              "automationId": "Window: 0x500bd6",
+              "rect": "1114,1392,1223,1440",
+              "className": "Taskbar.TaskListButtonAutomationPeer",
+              "state": "0x100000",
+              "name": "S9 pin test - 1 finestra in esecuzione"
+            }
+          ],
+          "afterSeconds": 0.1,
+          "detected": true
+        },
+        "visualTwoButtons": "y",
+        "hoverPreviewOnlyRunning": "y",
+        "runningElement": {
+          "controlType": "50000",
+          "offscreen": "0",
+          "automationId": "Window: 0x500bd6",
+          "rect": "1114,1392,1223,1440",
+          "className": "Taskbar.TaskListButtonAutomationPeer",
+          "state": "0x100000",
+          "name": "S9 pin test - 1 finestra in esecuzione"
+        },
+        "pinChanged": null
+      }
+    },
+    {
+      "id": "Q2-close",
+      "title": "Q2: negative control after target close",
+      "at": "2026-08-15T21:35:47.7422461+02:00",
+      "data": {
+        "wait": {
+          "detected": false,
+          "buttons": {
+            "controlType": "50000",
+            "offscreen": "0",
+            "automationId": "Appid: PinnedLauncher.Test.S9Oracle1",
+            "rect": "1070,1392,1114,1440",
+            "className": "Taskbar.TaskListButtonAutomationPeer",
+            "state": "0x100000",
+            "name": "S9 pin test bloccato"
+          }
+        },
+        "survivor": {
+          "controlType": "50000",
+          "offscreen": "0",
+          "automationId": "Appid: PinnedLauncher.Test.S9Oracle1",
+          "rect": "1070,1392,1114,1440",
+          "className": "Taskbar.TaskListButtonAutomationPeer",
+          "state": "0x100000",
+          "name": "S9 pin test bloccato"
+        },
+        "survivorChanged": null
+      }
+    },
+    {
+      "id": "late-observations",
+      "title": "Late / unexpected observations",
+      "at": "2026-08-15T21:35:56.5699870+02:00",
+      "data": {
+        "notes": ""
+      }
+    },
+    {
+      "id": "cleanup-unpin",
+      "title": "Q3: teardown (programmatic)",
+      "at": "2026-08-15T21:35:56.8618038+02:00",
+      "data": {
+        "uiaGone": true,
+        "wait": {
+          "detected": true,
+          "afterSeconds": 0.0
+        },
+        "tool": {
+          "exitCode": 0,
+          "output": "CoInitializeEx            hr=0x00000000\r\nSHCreateItemFromParsingName hr=0x00000000 (C:\\Users\\Lorenzo\\AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\PinnedLauncher S9 Spike\\S9 pin test.lnk)\r\nCoCreateInstance(StartMenuPin) hr=0x00000000\r\nRemoveFromList            hr=0x00000001"
+        }
+      }
+    }
+  ],
+  "machineBuild": "26200.9168"
+}

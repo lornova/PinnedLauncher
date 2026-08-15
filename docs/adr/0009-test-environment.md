@@ -3,6 +3,15 @@
 - Status: accepted
 - Date: 2026-08-13
 - Completes: [ADR-0008](0008-test-strategy-ut-coverage-qt.md) (which deferred tool selection)
+- Amended: 2026-08-15 — spike S-9 validated the UIA oracle on family 26200
+  ([report](../spikes/s9-uiaoracle.md)): taskbar buttons expose
+  `AutomationId = "Appid: <AUMID>"` (pinned entry) vs `"Window: 0x<hwnd>"`
+  (running window), so the pin is identified by its AUMID even against a
+  same-named running target, and the F-2 invariant is asserted by comparing
+  the pin's element across states; prefixes are undocumented — match
+  prefix-tolerantly, revalidate per build family as required below. Hygiene
+  defined and demonstrated: reserved `PinnedLauncher.Test.*` namespace,
+  programmatic leftover sweep, gesture-free teardown.
 
 ## Context
 

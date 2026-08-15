@@ -64,9 +64,18 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       the manual pin gesture entirely. LAF gating is servicing-dependent (token
       required below KB5074105) and runtime-detectable via Microsoft's documented
       registry probe (architecture §8.1).
-- [ ] **S-9** Validate the UIA test oracle (persistent pin vs same-named running
-      button distinguishability) and define test-environment hygiene (dedicated
-      profile/VM, reserved test-AUMID namespace, teardown, failed-run recovery).
+- [x] **S-9** UIA test oracle + hygiene — **completed 2026-08-15**
+      ([docs/spikes/s9-uiaoracle.md](docs/spikes/s9-uiaoracle.md)): taskbar
+      buttons expose `AutomationId = "Appid: <AUMID>"` (pin) vs
+      `"Window: 0x<hwnd>"` (running window) — the pin is identifiable by its
+      AUMID even against a same-named running target, and the F-2 invariant
+      is asserted by element comparison across states (held exactly in the
+      run). Hygiene defined and demonstrated: reserved
+      `PinnedLauncher.Test.*` namespace, programmatic leftover sweep,
+      gesture-free teardown; dedicated profile/VM deferred to the P2
+      matrix, which also varies `TaskbarGlomLevel`. ADR-0009 amended;
+      oracle revalidates per build family alongside the S-3 confirmation
+      runs.
 - [ ] Management-window opens: `shell:AppsFolder` enumeration perf/ordering for the
       installed-apps picker.
 
