@@ -1,4 +1,4 @@
-# CLAUDE.md
+# AGENTS.md
 
 ## What this project is
 
@@ -50,5 +50,5 @@ the release train.
   tooling. Quality gate = the `verify` script (release-plan §4) — there is **no CI**.
 - Single-developer flow: work lands on `master`, one commit per 0.x.y step
   (release-plan §4). **Never stage/commit/push without an explicit instruction**
-  (global rule in `~/.claude/CLAUDE.md`).
+  (global rule in `~/.Codex/AGENTS.md`).
 - English for all docs/code; at least en + it + hu localization planned (NF-11).
