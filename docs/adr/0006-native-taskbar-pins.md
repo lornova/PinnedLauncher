@@ -2,6 +2,14 @@
 
 - Status: **accepted — conditional on spike S-3** (the go/no-go); to be annotated with
   verification evidence before phase P1 starts, or superseded if S-3 fails
+- Amended 2026-08-15: S-3 verified the mechanism on build family 26200 (Pro,
+  26200.8875) — flavor-B cases pass for plain-Win32, self-AUMID, and packaged
+  targets; **GO recorded**, see
+  [docs/spikes/s3-aumid.md](../spikes/s3-aumid.md) §7. Finding: flavor-A pins to
+  plain Win32 exes merge via **target-path association** (every instance of the
+  target exe, however launched) → flavor B mandatory for that target class.
+  Families 26100/28000 remain as non-blocking confirmation runs; 22631 descoped
+  (out of support 2026-11-10).
 - Date: 2026-08-13
 - Related: [ADR-0005](0005-overlay-strip-with-flyout-fallback.md) — the rejected
   overlay/flyout alternative

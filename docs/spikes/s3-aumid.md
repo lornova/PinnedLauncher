@@ -2,8 +2,9 @@
 
 - Step: [implementation-plan](../implementation-plan.md) P0.1 — this report is the
   exit criterion.
-- Status: **in progress** — family 26200 **complete, all three B cases PASS**
-  (2026-08-14, §6.1); families 26100 / 22631 / 28000 pending (§3).
+- Status: **GO — recorded 2026-08-15 (§7).** Family 26200 complete, all three B
+  cases PASS (§6.1); 26100/28000 scheduled as non-blocking confirmation runs
+  (§6.2/§6.4); 22631 descoped (§6.3).
 - Verifies: [ADR-0006](../adr/0006-native-taskbar-pins.md) (conditionally accepted),
   [architecture §2](../architecture.md#2-how-a-proxy-pin-works) (identity-propagation
   subtlety), F-2; risk R-1 ([feasibility §6](../feasibility.md#6-risks-of-the-chosen-design)).
@@ -38,6 +39,10 @@ The two implementation flavors (architecture §3) split the question:
   (P0.1).
 - On GO, ADR-0006 receives a dated `Amended:` annotation "verified on builds …"
   listing the families of §3 (annotation rule: ADR-0001).
+
+Applied 2026-08-15: **GO recorded** on the §6.1 evidence, with the remaining
+families reclassified from gating evidence to non-blocking confirmation runs —
+rationale and tripwire semantics in §7.
 
 ## 3. Matrix snapshot (2026-08-14)
 
@@ -235,7 +240,7 @@ this family.** Flavor-A split: plain Win32 merges via target-path association
 stay separate. Containment held in the one failing case (pin cosmetically
 expands, recovers on close, never worse than a stock pin).
 
-### 6.2 Family 26100 (24H2 / LTSC 2024) — pending, planned
+### 6.2 Family 26100 (24H2 / LTSC 2024) — planned, non-blocking confirmation (§7)
 
 Planned on a second machine (home workstation VM), deliberately not on the §6.1
 machine. Context for expectations, not a substitute for the run: 25H2 is an
@@ -246,11 +251,14 @@ feature touches pin association.
 
 *(same table, to be added at run time)*
 
-### 6.3 Family 22631 (23H2, Enterprise/Education) — pending (VM)
+### 6.3 Family 22631 (23H2, Enterprise/Education) — descoped (2026-08-15)
 
-*(same table, to be added at run time)*
+Descoped on timeline: 23H2 leaves support 2026-11-10, before this project's
+first public release can exist, and official evaluation media for it is no
+longer reliably obtainable. P0.2's accepted-outcome rule applied. No support
+claim is made for 22631 unless the P2 matrix later re-adds it with evidence.
 
-### 6.4 Family 28000 (26H1) — pending, planned
+### 6.4 Family 28000 (26H1) — planned, non-blocking confirmation (§7)
 
 Planned on a second machine (home workstation VM) from an Insider Release
 Preview x64 ISO (§3 access note). The developer weighs this family highest: as
@@ -259,12 +267,34 @@ behavior (risk R-1).
 
 *(same table, to be added at run time)*
 
-## 7. Outcome — to be recorded
+## 7. Outcome — GO (recorded 2026-08-15)
 
-To fill once §6 is complete on every in-scope family, applying §2:
-
-- **Decision:** GO / NO-GO —
-- **ADR-0006 annotation** (on GO): add under Status —
-  `Amended 2026-__-__: S-3 verified on build families 26200.____/26100.____/22631.____[/28000.____] — see docs/spikes/s3-aumid.md.`
-- **Feed to P0.3** (flavor A vs B per target kind), from the A-case rows:
-- **TODO.md**: check the S-3 item.
+- **Decision: GO — definitive.** The §2 GO condition (B1..B3 pass) is satisfied
+  on family 26200 (§6.1). The remaining families are reclassified from gating
+  evidence to risk-reduction; the project proceeds without waiting on them.
+- **Rationale for closing the go/no-go on 26200 evidence alone:**
+  - The question the go/no-go existed to answer — does the mechanism work at
+    all on a current mainstream build? — is answered affirmatively. No single
+    remaining-family result can invalidate the design; each would only narrow
+    claims or trigger investigation (tripwire semantics below).
+  - Decision context, recorded by the owner: the project is primarily for the
+    developer's own machines, which run the verified family; working on other
+    people's machines is a desirable side effect, not the goal.
+  - Per-family coverage duty lives with the P2 test plan's qualification
+    matrix (authoritative per C-2); the scheduled runs become its first
+    entries.
+- **Confirmation runs (non-blocking), tripwire semantics:** a 26100 failure
+  would contradict the shared-servicing-branch expectation and demands
+  investigation of the 26200 model before further reliance on it; a 28000
+  failure redirects effort (investigate shell changes / alternate activation
+  paths) and tempers expectations for late-2026 build families. Neither
+  reverses this GO by itself.
+- **Descope:** 22631 (§6.3).
+- **ADR-0006:** annotated 2026-08-15 (dated `Amended:` header line, per
+  ADR-0001).
+- **Feed to P0.3** (flavor A vs B per target kind; finalized together with S-6
+  evidence): flavor B **mandatory** for plain Win32 targets (A1
+  target-path-association finding); flavor A viable but benefit-free for
+  self-identifying (A2) and packaged (A3) targets — uniform flavor B is the
+  KISS-consistent candidate.
+- **TODO.md:** S-3 item closed with this outcome.
