@@ -216,8 +216,18 @@ the window follows the system. No AUMID scheme setting — it is fixed by design
 
 ## 8. Open questions
 
-1. Installed-apps picker source: enumerate `shell:AppsFolder` (covers Win32 + packaged
-   uniformly) — spike-verify item ordering/perf with large app lists.
+1. ~~Installed-apps picker source: enumerate `shell:AppsFolder` (covers Win32 +
+   packaged uniformly) — spike-verify item ordering/perf with large app lists.~~
+   **Resolved by the P0.2 check (2026-08-15,
+   [report](spikes/appsfolder-enum.md))**: confirmed as the single source —
+   166 items enumerated with names + AUMIDs in ≤ 0.5 s even via the slow
+   automation layer (upper bound; linear scaling). Consequences: the returned
+   order is **not** sorted — the picker sorts locale-aware by name itself;
+   duplicate names are possible in principle and get disambiguated (AUMID/
+   publisher secondary line); the parse name is an opaque `ParseName`-able
+   identity — AUMID-shaped for most entries but a **raw file path** for
+   `.lnk`/`.bat` apps without one — and packaged entries are classified by the
+   `!` separator. Enumerate on dialog open; no caching layer warranted.
 2. ~~Can the pin guide deep-link Start to the entry (`shell:AppsFolder` selection) or
    only open the folder? Cosmetic; resolve during S-4.~~ **Resolved by S-4
    (2026-08-15)**: yes — `SHOpenFolderAndSelectItems` on `shell:AppsFolder\<AUMID>`

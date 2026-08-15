@@ -9,10 +9,10 @@ as its **own separate button** (the pin never expands in place). License: GPL-3.
 
 **Current status: documentation only — no code yet.** Spike **S-3 passed — GO
 recorded 2026-08-15** ([docs/spikes/s3-aumid.md](docs/spikes/s3-aumid.md));
-ADR-0006 carries the verification annotation. P0.2 spikes complete: S-4..S-9 all
-carry accepted outcomes (S-8 closed 2026-08-15: API-first pin with gesture
-fallback, posture configurable); the P0.2 `shell:AppsFolder` enumeration check
-remains open. See
+ADR-0006 carries the verification annotation. **P0.2 is complete** (2026-08-15):
+spikes S-4..S-9 and the `shell:AppsFolder` enumeration check all carry accepted
+outcomes (S-8: API-first pin with gesture fallback, posture configurable). Next:
+the P0.3 flavor decision (inputs S-3 + S-6 on record). See
 [docs/implementation-plan.md](docs/implementation-plan.md) for phases P0–P3 and
 the release train.
 
@@ -54,3 +54,7 @@ the release train.
   (release-plan §4). **Never stage/commit/push without an explicit instruction**
   (global rule in `~/.claude/CLAUDE.md`).
 - English for all docs/code; at least en + it + hu localization planned (NF-11).
+- `AGENTS.md` is a **read-only reviewer's guide** for non-Claude agents (the
+  maintainer uses e.g. Codex for reviews only). It deliberately does **not**
+  mirror this file and carries no status paragraph — never sync content between
+  the two; status updates land here only.

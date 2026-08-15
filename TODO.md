@@ -87,8 +87,15 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       matrix, which also varies `TaskbarGlomLevel`. ADR-0009 amended;
       oracle revalidates per build family alongside the S-3 confirmation
       runs.
-- [ ] Management-window opens: `shell:AppsFolder` enumeration perf/ordering for the
-      installed-apps picker.
+- [x] Management-window opens: `shell:AppsFolder` enumeration perf/ordering for the
+      installed-apps picker — **completed 2026-08-15**
+      ([docs/spikes/appsfolder-enum.md](docs/spikes/appsfolder-enum.md)): 166
+      items with names + AUMIDs in ≤ 0.5 s warm via the slow automation layer
+      (upper bound); returned order NOT sorted (picker sorts itself); parse
+      name = `System.AppUserModel.ID` on every sampled item but is a raw file
+      path for some Win32 entries (opaque `ParseName`-able identity); packaged
+      entries classified by `!`. `shell:AppsFolder` confirmed as the picker's
+      single source; no caching layer warranted.
 
 ### Engineering (phases P1–P3, mapped to releases in the implementation plan)
 - [ ] Detailed design docs: config JSON schema, AUMID scheme, CLI spec
