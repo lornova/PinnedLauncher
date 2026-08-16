@@ -95,7 +95,7 @@ addressable by adjusting that launcher's proxy configuration.
 
 | | A — Direct shortcut *(retired)* | B — Windowless proxy exe *(decided)* |
 |---|---|---|
-| Pin `.lnk` targets | the app directly | a tiny `PinnedLauncher.exe` |
+| Pin `.lnk` targets | the app directly | the tiny windowless proxy exe (`PinnedLauncherProxy.exe`, named in [design/cli.md](design/cli.md) §1; corrected 2026-08-16 — this cell previously wrote `PinnedLauncher.exe`, which is the management app) |
 | Process of ours at click | none | one, windowless, exits immediately |
 | Per-launch logic (args, working dir, `runas` elevation, run-mode, focus-if-running) | ❌ baked into the `.lnk` only | ✅ full control |
 | AUMID non-merge | relies on target having its own identity (risk, §2) | ✅ decouples the pin's shortcut identity from the target's launch (§2) |
@@ -298,7 +298,8 @@ the gesture returns the entry to `pending-removal` (origin + kind preserved; the
 gesture is re-offered later, NF-8). **Import normalization (UC-8):** imported
 entries always enter `awaiting-pin` — pin gestures cannot be imported — and the
 first reconciliation promotes to `active` any entry whose pin is already observed
-**and** whose pin-visible fields (name / icon / badge) match that pin; an
+**and** whose pin-visible fields (name / icon source; badge excluded since
+2026-08-16, the soft-badge P1 decision in design/config-schema.md §4) match that pin; an
 overlapping import that changes pin-visible fields enters `awaiting-repin` instead
 (UC-5's re-pin rule applies to imports too). In merge mode, existing entries keep
 their current state. A **native

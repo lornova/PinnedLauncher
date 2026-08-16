@@ -110,7 +110,8 @@ Ordered so that **what ships is what was verified**:
    prior result for that version (ADR-0009).
 3. **Package once**, from the step-2 verified build outputs: the zip's binaries embed
    version + commit SHA, and the archive carries a **candidate manifest**
-   (version, commit SHA, attempt ID). Every subsequent step tests **this exact
+   (version, commit SHA, attempt ID) and a **third-party-notices file** with the
+   bundled dependencies' licenses (ADR-0013). Every subsequent step tests **this exact
    archive** — nothing is ever rebuilt after this point.
 4. Smoke-test the *extracted archive*: (a) fresh install in a clean profile — app
    starts and the deepest flow shipped so far works (0.1–0.2: app starts; from 0.3:

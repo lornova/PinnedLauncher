@@ -2,6 +2,18 @@
 
 All project documentation lives here, versioned with the code ("architecture as code").
 
+## Spirit
+
+PinnedLauncher is **hobby software**: written for fun, to give its creator a
+tool he actually wants on his own machines. It is not enterprise software.
+The engineering apparatus in these documents (requirements, ADRs, spikes,
+tests) exists for one reason: to keep order and make the implementation
+easier and less error-prone. Process is a tool here, never a religion; when
+following a rule stops helping the product, the rule is what bends. Security
+stays at essential best practices, proportionate to a per-user desktop
+utility. None of this is a license for sloppiness: it fixes the yardstick
+every trade-off in these documents is measured against.
+
 ## Toolchain
 
 Plain **Markdown**, rendered natively by GitHub/Gitea/VS Code — no build step.
@@ -28,6 +40,7 @@ Plain **Markdown**, rendered natively by GitHub/Gitea/VS Code — no build step.
 | [ui-reference.md](ui-reference.md) | Which interaction patterns do mature launchers (GNOME/KDE) converge on? |
 | [release-plan.md](release-plan.md) | How do 0.x previews progress to a stable 1.0? |
 | [implementation-plan.md](implementation-plan.md) | In what order is this built, phase by phase, release by release? |
+| [design/](design/) | P1 detailed designs: one code-adjacent reference per module (config schema, AUMID scheme, CLI, modules). |
 | [adr/](adr/) | Why did we decide what we decided? |
 | [spikes/](spikes/) | What evidence did each P0 spike produce, and what was decided from it? |
 | [../TODO.md](../TODO.md) | What must land before 1.0, and what is deferred after? |

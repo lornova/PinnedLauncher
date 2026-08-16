@@ -135,7 +135,9 @@ elevation flags) before applying, offers replace or merge explicitly, validates 
 and re-runs the pin guide for entries needing a pin — the pin gestures themselves
 cannot be imported, the shell requires the user. Imported entries enter
 `awaiting-pin`; the first reconciliation promotes to `active` any entry whose pin
-is already observed **and** whose pin-visible fields (name / icon / badge) match
+is already observed **and** whose pin-visible fields (name / icon source; badge
+excluded since 2026-08-16: badge changes are soft and heal at the next Explorer
+session, P1 decision in design/config-schema.md §4) match
 that pin — an overlapping import that changes pin-visible fields enters
 `awaiting-repin` instead, UC-5's re-pin rule applying to imports too. In merge
 mode existing entries keep their current state (architecture §4.3). In **replace** mode, existing

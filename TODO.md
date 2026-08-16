@@ -105,9 +105,13 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       single source; no caching layer warranted.
 
 ### Engineering (phases P1–P3, mapped to releases in the implementation plan)
-- [ ] Detailed design docs: config JSON schema, AUMID scheme, CLI spec
-      (`PinnedLauncher.exe` / proxy args), error-handling & logging policy, threading
-      model.
+- [x] Detailed design docs (P1): **completed 2026-08-16**
+      ([docs/design/](docs/design/)): config schema, AUMID scheme, CLI +
+      process contracts, modules (seams, presenters, threading, logging).
+      All four accepted and amended after an external Codex review;
+      ADR-0013 records the product-dependency policy (nlohmann/json);
+      Q-6 interface header skeletons compile clean (`src/pl/`,
+      MSVC /W4 /WX, C++latest).
 - [ ] Test plan (`docs/test-plan.md`) + Windows build matrix; traceability generator
       (`docs/traceability.md` from tagged tests).
 - [ ] One-command **verification script** (`verify`: clean build + UT + coverage
@@ -142,7 +146,12 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       (ADR-0010 trade-off), or adoption of documented Win32 dark theming if Microsoft
       ever ships it.
 - [ ] **Portable mode** (NF-13): config next to the exe.
-- [ ] **winget** manifest / Microsoft Store consideration.
+- [ ] **winget** distribution (planned, 2026-08-16): manifest referencing the
+      GitHub release artifacts (`github.com/lornova/PinnedLauncher`); **Microsoft
+      Store** possible — Store packaging (MSIX, package identity) would interact
+      with the stable-install-location contract (release-plan §1) and the S-8
+      unpackaged-caller findings, so it needs its own analysis (likely an ADR)
+      before commitment.
 - [ ] **Migration assistant**: import targets from the old Quick Launch folder and/or
       existing taskbar pins.
 - [ ] Additional languages beyond en/it/hu.

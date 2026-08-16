@@ -13,15 +13,29 @@ maintainer's Claude Code sessions live in `CLAUDE.md`, not here.
   each with a file/line reference and, where applicable, the requirement
   ID (`F-n`, `NF-n`, `Q-n`, `C-n`) or ADR it violates.
 
+## Review posture: proportionate, not bureaucratic
+
+This is **hobby software**, built for fun and for the maintainer's own use;
+it is not enterprise software. The engineering process exists to keep order
+and reduce errors, never as an end in itself. Reviews are valuable when they
+find **real defects missed here and obvious errors**: contradictions between
+documents, broken flows, genuine bugs, wrong API facts. They must not become
+a pointless hell of nitpicking. Keep security findings to **essential best
+practices** for a per-user desktop tool; no enterprise threat-modeling
+theater. Prefer a short list of significant findings over an exhaustive
+inventory: if a finding would not change what the maintainer builds, leave
+it out. This is not an invitation to sloppiness; it is the project's
+yardstick for proportion.
+
 ## What you are reviewing
 
 **PinnedLauncher** — a native Windows 11 quick-launch replacement built on
 **real taskbar pins**: each launcher is a proxy `.lnk` carrying the
 target's icon/name and a distinct AppUserModelID, so clicking launches the
 target while the running app opens as its own separate button (the pin
-never expands in place). License: GPL-3.0. The project is currently
-**docs-as-code** (phase P0 — design and spike evidence; no product code
-yet); review the documents as the product.
+never expands in place). License: GPL-3.0. The project is **docs-as-code**:
+until substantial code exists, the documents are the product; review them as
+such.
 
 ## Authorities to review against
 

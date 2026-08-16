@@ -7,16 +7,29 @@ taskbar pins**: each launcher is a proxy `.lnk` with the target's icon/name and 
 distinct AppUserModelID, so clicking launches the target while the running app opens
 as its **own separate button** (the pin never expands in place). License: GPL-3.0.
 
-**Current status: documentation only — no code yet.** Spike **S-3 passed — GO
-recorded 2026-08-15** ([docs/spikes/s3-aumid.md](docs/spikes/s3-aumid.md));
-ADR-0006 carries the verification annotation. **P0.2 is complete** (2026-08-15):
-spikes S-4..S-9 and the `shell:AppsFolder` enumeration check all carry accepted
-outcomes (S-8: API-first pin with gesture fallback, posture configurable).
-**Elevation-guard semantics decided 2026-08-16** (ADR-0011: boundary guard,
-`Full`-token predicate; UAC-off / built-in-Administrator supported, qualification
-at 0.7.x). **P0.3 decided 2026-08-16: uniform flavor B** (ADR-0012; flavor A
-retired). P0.4's decisions (name, license) closed 2026-08-14 — **P0 is complete**.
-Next: P1 detailed design. See
+## Spirit (weigh every process decision against this)
+
+This is **hobby software**, vibe-coded for fun, to create a useful tool *for
+the creator*. It is not enterprise software. The SWE apparatus (requirements,
+ADRs, spikes, tests) exists to keep order and structure and to make the
+implementation easier and less error-prone; it must be **helpful, never a
+bureaucratic religion**. Process-as-religion is exactly how enterprise
+software derails, and it does not happen here: prefer the lightest artifact
+that does the job, keep security to essential best practices for a per-user
+desktop tool, and surface only decisions that are genuinely hard to reverse.
+None of this licenses sloppiness; it is the yardstick for proportion.
+
+**Current status: design complete, implementation not started** (the only code
+is the compiling Q-6 interface skeletons in `src/pl/`). **P0 is complete**
+(2026-08-16: S-3 GO recorded 2026-08-15, spikes S-4..S-9 accepted, ADR-0011
+elevation-boundary guard, ADR-0012 uniform flavor B, name/license closed).
+**P1 is complete (2026-08-16)**: four accepted design docs in
+[docs/design/](docs/design/) (config schema, AUMID scheme, CLI + process
+contracts, modules), all amended after an external Codex review;
+[ADR-0013](docs/adr/0013-product-dependencies-nlohmann-json.md)
+(product-dependency policy, nlohmann/json); Q-6 interface headers compile
+clean (`src/pl/`, MSVC /W4 /WX). Next: **P2** (test plan + verify script),
+**not started** by explicit maintainer instruction. See
 [docs/implementation-plan.md](docs/implementation-plan.md) for phases P0–P3 and
 the release train.
 
