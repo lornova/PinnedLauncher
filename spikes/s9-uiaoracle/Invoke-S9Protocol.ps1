@@ -149,14 +149,14 @@ if (-not (Test-Path $uiaExe) -or -not (Test-Path $targetExe)) {
 }
 
 # Hygiene sweep (Q3): the failed-run-recovery reference implementation.
-# Enumerate the pin folder, read each copy's AUMID, flag PinnedLauncher.*
+# Enumerate the pin folder, read each copy's AUMID, flag PinnedLauncher.Test.*
 # leftovers, unpin programmatically - Start source if it exists, else the
 # pinned copy itself (a path form S-4 never needed; its outcome is a datum).
 Info '[auto] hygiene sweep: reading the AUMID of every pinned copy...'
 $sweep = @()
 foreach ($lnk in (Get-ChildItem $s9PinDir -Filter *.lnk -ErrorAction SilentlyContinue)) {
     $aumid = Read-S9LnkAumid $lnk.FullName
-    if ($aumid -like 'PinnedLauncher.*') {
+    if ($aumid -like 'PinnedLauncher.Test.*') {
         Bad "  [auto] leftover found: '$($lnk.Name)' AUMID=$aumid"
         $entry = [ordered]@{ lnk = $lnk.Name; aumid = $aumid; unpinForm = $null; unpin = $null }
         if (Test-Path $s4unpin) {
@@ -178,7 +178,7 @@ foreach ($lnk in (Get-ChildItem $s9PinDir -Filter *.lnk -ErrorAction SilentlyCon
         $sweep += , $entry
     }
 }
-if ($sweep.Count -eq 0) { Good '  [auto] no PinnedLauncher.* leftovers - environment clean' }
+if ($sweep.Count -eq 0) { Good '  [auto] no PinnedLauncher.Test.* leftovers - environment clean' }
 Record 'sweep' 'Q3: preflight hygiene sweep' @{ leftovers = $sweep; pinCount = @(Get-ChildItem $s9PinDir -Filter *.lnk -ErrorAction SilentlyContinue).Count }
 
 Info '[auto] (re)generating the test article...'

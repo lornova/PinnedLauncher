@@ -1,6 +1,9 @@
 # ADR-0004 — C++20 / Win32 / COM stack, no WinUI, no .NET
 
 - Status: accepted
+- Amended: 2026-08-16 — [ADR-0012](0012-uniform-flavor-b.md) decided uniform
+  flavor B: the windowless proxy exe is a **definite** second executable, no
+  longer "optional … for flavor B".
 - Date: 2026-08-13
 
 ## Context

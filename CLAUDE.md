@@ -11,8 +11,12 @@ as its **own separate button** (the pin never expands in place). License: GPL-3.
 recorded 2026-08-15** ([docs/spikes/s3-aumid.md](docs/spikes/s3-aumid.md));
 ADR-0006 carries the verification annotation. **P0.2 is complete** (2026-08-15):
 spikes S-4..S-9 and the `shell:AppsFolder` enumeration check all carry accepted
-outcomes (S-8: API-first pin with gesture fallback, posture configurable). Next:
-the P0.3 flavor decision (inputs S-3 + S-6 on record). See
+outcomes (S-8: API-first pin with gesture fallback, posture configurable).
+**Elevation-guard semantics decided 2026-08-16** (ADR-0011: boundary guard,
+`Full`-token predicate; UAC-off / built-in-Administrator supported, qualification
+at 0.7.x). **P0.3 decided 2026-08-16: uniform flavor B** (ADR-0012; flavor A
+retired). P0.4's decisions (name, license) closed 2026-08-14 — **P0 is complete**.
+Next: P1 detailed design. See
 [docs/implementation-plan.md](docs/implementation-plan.md) for phases P0–P3 and
 the release train.
 
@@ -36,8 +40,11 @@ the release train.
   ADR-0006). Documented shell APIs only.
 - **No .NET, no WinUI, no bundled runtimes** (NF-1, ADR-0004): modern C++ (C++20+),
   Win32 + COM, at most two executables (management app + windowless proxy).
-- **Confused-deputy guard**: the proxy never executes config-derived commands while
-  elevated; elevation applies to the resolved target via `runas` (UC-6).
+- **Confused-deputy guard**: the proxy never executes config-derived commands
+  **across an elevation boundary** — refuse iff the token's elevation type is
+  `Full` (ADR-0011); elevation applies to the resolved target via `runas` (UC-6).
+  UAC-off / built-in-Administrator (without Admin Approval Mode) sessions are
+  supported: no boundary exists there and the guard deliberately never fires.
 - **Config is the single source of truth**; icons/shortcuts/jump lists are derived,
   regenerable artifacts with persisted lifecycle states (architecture §4).
 - **KISS** (Q-3): no speculative abstractions; inheritance where it is the natural

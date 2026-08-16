@@ -46,13 +46,13 @@ Proposed action enum for us:
 | Binding | Default (pure launcher) |
 |---|---|
 | Left click | `launch-new` |
-| Middle click | `launch-new` (explicit new instance) |
-| Shift+left | `focus-or-launch` |
-| Ctrl+Shift+left | — *(the native "elevate the pin" convention is **unsupported** in this project: it would elevate the proxy, a confused-deputy risk — see UC-6; elevation is a per-launcher feature instead)* |
+| Middle click | `launch-new` — natively equivalent to left on a launcher-only pin; whether a launch yields a *new instance* is the target's decision (UC-6) |
+| Shift+left | `launch-new` natively (UC-6); `focus-or-launch` exists only as the optional per-launcher UC-10 behavior (Could, post-1.0), never as a modifier default |
+| Ctrl+Shift+left | — *(the native "elevate the pin" convention is **refused across an elevation boundary**: it would elevate the proxy, a confused-deputy risk — UC-6, ADR-0011; in no-boundary sessions the guard never fires and the click is an ordinary launch. Elevation is a per-launcher feature instead)* |
 
 > **Normative note:** on native pins only the shell's own modifiers exist
 > (Ctrl+Shift = elevated); the richer matrix above describes the *optional proxy-side*
-> behaviors (`focus-or-launch` is a Could). Click semantics are normatively defined in
+> behaviors (`focus-or-launch` is a Could, post-1.0). Click semantics are normatively defined in
 > [use-cases.md UC-6](use-cases.md), not here.
 
 Scroll over icon (dash-to-panel `scroll-icon-action`): `none` | `cycle-windows` |

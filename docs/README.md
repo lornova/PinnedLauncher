@@ -35,8 +35,8 @@ Plain **Markdown**, rendered natively by GitHub/Gitea/VS Code — no build step.
 ## Conventions
 
 - One document per concern; link between documents instead of duplicating content.
-- Requirements have stable IDs (`F-n`, `NF-n`, `C-n`) so ADRs, issues, and future code
-  comments can reference them.
+- Requirements have stable IDs (`F-n`, `NF-n`, `Q-n`, `C-n`) so ADRs, issues, and
+  future code comments can reference them.
 - ADR decisions are immutable once accepted; superseding decisions get a new ADR that
   links back. Dated `Amended:` header annotations (evidence, status notes, factual
   corrections that leave the decision unchanged) are allowed — see ADR-0001.

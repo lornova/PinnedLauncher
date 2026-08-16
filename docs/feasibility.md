@@ -159,18 +159,18 @@ and only it — is assessed against the final requirement.)*
 | AppBar docked strip | ❌ second bar above taskbar | ✅ | ✅ | ✅ | AppSwitcherBar pattern |
 | One tray icon per launcher | ⚠️ right side, but 16 px + user must promote each | ✅ | ✅ | ✅ | UX-poor at scale |
 | Tray button + flyout panel | ⚠️ one icon; panel on demand | ✅ | ✅ | ✅ | Two clicks per launch |
-| **Pinned AUMID proxy shortcuts** | ✅ pinned zone = the wanted spot (after Start, before running apps) | ✅ (verify per C-2, spike S-3) | ✅ | ✅ | **Chosen design** — no strip at all; zero moving parts |
+| **Pinned AUMID proxy shortcuts** | ✅ pinned zone = the wanted spot (after Start, before running apps) | ✅ (verified: S-3 GO 2026-08-15; per-family confirmation runs in the P2 matrix) | ✅ | ✅ | **Chosen design** — no strip at all; zero moving parts |
 
 ## 6. Risks (of the chosen design)
 
 | # | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
-| R-1 | AUMID grouping/identity computation changes on a future build so a pin merges with its target | Low–Medium | High (breaks the core invariant) | Flavor B (windowless proxy decoupling the target's launch from the pin's identity — no API can set another process's AUMID); spike S-3 up front; failure is per-launcher and no worse than stock pin behavior |
-| R-2 | The one-time manual "Pin to taskbar" is friction / users get stuck | Medium | Low–Medium | Clear guided flow (S-4); pre-create the Start-menu entry so the pin action is one right-click |
-| R-3 | Target updates its icon and the proxy goes stale | Medium | Low | Re-extract icon on launch / periodically (S-5) |
-| R-4 | Elevated targets cause a double UAC or a lingering proxy button | Low | Low | Windowless proxy + correct `runas` handling (S-6) |
+| R-1 | AUMID grouping/identity computation changes on a future build so a pin merges with its target | Low–Medium | High (breaks the core invariant) | Flavor B (windowless proxy decoupling the target's launch from the pin's identity — no API can set another process's AUMID; uniform per ADR-0012); S-3 verified (GO 2026-08-15; per-family confirmation runs continue in the P2 matrix); failure is per-launcher and no worse than stock pin behavior |
+| R-2 | The one-time manual "Pin to taskbar" is friction / users get stuck | Medium | Low–Medium | API-first consent dialog (S-8) with the guided gesture as fallback (verified, S-4); pre-created Start-menu entry keeps the gesture to one right-click |
+| R-3 | Target updates its icon and the proxy goes stale | Medium | Low | Regenerate on launch/edit into a **stable icon path** (S-5: no live nudge exists — the pinned copy heals at the next Explorer session; immediate refresh = the guided re-pin) |
+| R-4 | Elevated targets cause a double UAC or a lingering proxy button | Low | Low | Windowless proxy + `runas` on the resolved target (verified, S-6: one prompt naming the target, silent `ERROR_CANCELLED` on decline) |
 | R-5 | Microsoft ships a native Quick Launch equivalent | Low | Happy obsolescence | — |
-| R-6 | Defender/SmartScreen friction for an unsigned proxy exe | Low (no injection, no system writes) | Low | Flavor A (no exe) where possible; optional code signing later |
+| R-6 | Defender/SmartScreen friction for an unsigned proxy exe | Low (no injection, no system writes) | Low | Code signing (decision before beta, TODO); flavor-A avoidance retired by ADR-0012 |
 
 ## 7. Verdict and recommended next steps
 
@@ -199,17 +199,15 @@ the alternatives simply don't exist here. Plain Win32 + COM; **no WinUI, no .NET
 
 The two honest costs: a **one-time pin consent** per launcher (a consent dialog via
 the S-8-validated `RequestPinCurrentAppAsync` route, guided gesture as fallback), and
-dependence on **AUMID grouping behavior** staying as documented across builds — which
-is why this verdict, and ADR-0006, are **conditional on spike S-3**.
+dependence on **AUMID grouping behavior** staying as documented across builds. The
+S-3 condition this verdict and ADR-0006 originally carried was **discharged
+2026-08-15** (GO on family 26200, ADR-0006 annotated); per-family confirmation runs
+continue in the P2 matrix.
 
-Recommended next steps (in order):
-1. **Spike S-3 (central go/no-go):** on every C-2-supported build, confirm a proxy
-   `.lnk` with a distinct AUMID launches the target as its **own** button while the pin
-   stays put — across a packaged app, a plain Win32 exe, and an exe that sets its own
-   AUMID; nail down the identity-propagation handling (flavor A vs B).
-2. **Spike S-4:** the pin/unpin lifecycle — guided pin flow, pinned-copy detection,
-   and `IStartMenuPinnedList::RemoveFromList` for programmatic unpin.
-3. **Spikes S-5 – S-9:** pin-edit propagation, elevation, jump-list rendering,
-   `TaskbarManager` pin-request evaluation, UIA test-oracle validation
-   (full definitions: [architecture §9](architecture.md) and the implementation plan).
-4. Then start the MVP on the [architecture.md](architecture.md) core.
+The recommended next steps this section originally listed — spikes S-3, S-4, and
+S-5–S-9 — were **all executed by 2026-08-15** with accepted outcomes; the evidence
+lives in the [spike reports](spikes/) and the outcome ledger in
+[architecture §9](architecture.md). The identity-propagation handling they were to
+nail down is decided: **uniform flavor B** (ADR-0012, 2026-08-16). Next: P1
+detailed design, then the MVP on the [architecture.md](architecture.md) core
+([implementation plan](implementation-plan.md)).

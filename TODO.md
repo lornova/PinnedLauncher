@@ -12,8 +12,13 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       checked — no collision).
 - [x] **OSS license** — decided 2026-08-14: **GPL-3.0**; `LICENSE` added in the
       initial commit.
+- [x] **Implementation flavor (P0.3)** — decided 2026-08-16: **uniform flavor B**
+      ([ADR-0012](docs/adr/0012-uniform-flavor-b.md)) — every pin targets the
+      windowless proxy; flavor A retired (S-3 merge evidence, per-launch feature
+      dependencies, no platform-risk hedge value).
 - [ ] **Code signing** — *decide before beta (0.8)*: unsigned (SmartScreen friction,
-      R-6) vs certificate (cost); document the choice.
+      R-6) vs certificate (cost); document the choice. Weight increased by
+      ADR-0012: no flavor-A "no exe" avoidance remains.
 
 ### Spikes (blocking architecture finalization — phase P0)
 - [x] **S-3** AUMID non-merge + identity propagation — **GO recorded 2026-08-15**
@@ -47,7 +52,9 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       vectors (Ctrl+Shift+click; jump-list *run as administrator*, which the
       shell does offer; programmatic `RunAs`) detected and refused before the
       config is read. Guard predicate for P1: refuse iff elevation type
-      `Full`. Side finding: fresh Start entries reach `shell:AppsFolder` only
+      `Full` — adopted, with boundary semantics and the supported
+      UAC-off / built-in-Administrator environments, in ADR-0011
+      (2026-08-16; no-boundary qualification at 0.7.x). Side finding: fresh Start entries reach `shell:AppsFolder` only
       after an indexing lag — the pin guide must poll `ParseName` before
       deep-linking (management-window §5.3).
 - [x] **S-7** Jump-list tasks — **completed 2026-08-15**
@@ -108,21 +115,27 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       infrastructure (release-plan §4).
 - [ ] Core library: config store, models (0.1).
 - [ ] Icon service: extraction, badge compositing, multi-size `.ico` writer (0.2).
-- [ ] Shortcut + AUMID manager; windowless proxy exe; launch service (0.3).
-- [ ] Management window: main list, add/edit, pin guide, presenters + UIA QTs (0.4).
+- [ ] Shortcut + AUMID manager; windowless proxy exe; launch service; persisted
+      lifecycle states + state-aware reconciliation (NF-8 core, architecture §4.3)
+      (0.3).
+- [ ] Management window: main list, add/edit, pin guide, pending-state re-offer UI
+      (NF-8), presenters + UIA QTs (0.4).
 - [ ] Jump-list publisher: per-launcher menus, wired to the shipped window CLI (0.5).
 - [ ] Settings, config import/export (with preview), en/it/hu localization, accessibility
       pass, clean uninstall (UC-13) (0.6).
 - [ ] Should-requirements completion: packaged-app/document/folder/URL targets (F-7),
-      full per-launcher properties (F-8), elevation hardening, config-migration
-      machinery + UTs (0.7 — feature-complete).
+      full per-launcher properties (F-8), elevation hardening — incl. the ADR-0011
+      guard QTs on the UAC-off / built-in-Administrator environment profile —
+      config-migration machinery + UTs (0.7 — feature-complete).
 - [ ] User documentation: quick start with screenshots (before 0.8).
 - [ ] Interactive QT protocol executed on full build matrix (0.8/0.9 gates).
 
 ## After 1.0
 
 - [ ] **Launch groups** (UC-15 / F-14): one pin starting a set of targets.
-- [ ] **Per-launcher global hotkeys** (F-13 remainder).
+- [ ] **Per-launcher global hotkeys** (the UC-14 stretch feature; F-13 covers
+      keyboard navigation/UIA, not hotkeys — assign a new stable requirement ID
+      if this is promoted).
 - [ ] Optional **tray icon** for quick settings access (management-window §8, off by
       default).
 - [ ] Fuller **dark client area** for the management window via documented APIs only
@@ -142,3 +155,10 @@ release) and what is deliberately deferred **after 1.0**. Release stages and gat
       launch/edit. Bounded by the S-5 outcome: regeneration alone refreshes a pin
       only at the next Explorer session (no live nudge exists), so the watcher's
       value is early regeneration plus, at most, prompting a re-pin.
+- [ ] **Focus-or-launch** *(very low priority)*: optional per-launcher click
+      behavior — focus the target's existing window instead of launching (UC-6 /
+      UC-10 Could; capability matrix drafted in management-window §5.2). At
+      promotion: reserve **F-16**, design the window-matching heuristics
+      (multi-window targets, launcher-stub targets, packaged ⚠), and fix the
+      elevation precedence — focus an existing window **before** any
+      launch/elevation, so no UAC fires when nothing launches.

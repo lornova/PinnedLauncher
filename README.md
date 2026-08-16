@@ -16,10 +16,12 @@ running window) while keeping everything native.
 
 ## Status
 
-**Feasibility study complete; architecture selected conditionally — implementation
-planning.** The chosen design (ADR-0006) is accepted **subject to validation spike
-S-3**, the go/no-go that must pass before implementation starts. No code yet. Open source
-(license TBD before the first public tag); releases will follow the
+**Phase P0 complete (2026-08-16) — detailed design (P1) is next.** The chosen design
+(ADR-0006) is **spike-verified**: the S-3 go/no-go passed (GO recorded 2026-08-15)
+and spikes S-4..S-9 all carry accepted outcomes; the implementation flavor is
+decided (**uniform flavor B** — every pin targets the windowless proxy, ADR-0012)
+and the elevation guard has boundary semantics (ADR-0011). No product code yet.
+Open source under **GPL-3.0**; releases will follow the
 [release plan](docs/release-plan.md): 0.1–0.7 alphas → 0.8.x beta (feature freeze) →
 0.9.x release candidates (bug fixes only) → the last RC promoted to **1.0** (same
 source commit, rebuilt only to stamp the new version).
@@ -31,7 +33,7 @@ Work tracking: [TODO.md](TODO.md) · phasing:
 | [docs/feasibility.md](docs/feasibility.md) | Platform constraints, prior art, technique assessment, conclusion |
 | [docs/use-cases.md](docs/use-cases.md) | Actors and use cases |
 | [docs/requirements.md](docs/requirements.md) | Functional / non-functional requirements and constraints |
-| [docs/architecture.md](docs/architecture.md) | Alternative designs, trade-off matrix, recommended path |
+| [docs/architecture.md](docs/architecture.md) | Alternative designs, trade-off matrix, the decided design |
 | [docs/management-window.md](docs/management-window.md) | Design of the management window (the app's only UI) |
 | [docs/ui-reference.md](docs/ui-reference.md) | UI patterns borrowed from dash-to-panel / dash-to-dock / KDE |
 | [docs/release-plan.md](docs/release-plan.md) | Version scheme, stages (alpha/beta/RC), gates to 1.0 |
@@ -51,10 +53,10 @@ Alternatives that draw or inject UI (overlay strip, flyout panel, appbar,
 `Shell_TrayWnd` reparenting, explorer injection à la ExplorerPatcher/Windhawk) were
 studied and **rejected** (ADR-0003, ADR-0005, ADR-0006).
 
-Two honest costs: a one-time manual *Pin to taskbar* per launcher (assumed manual
-pending spike S-8's evaluation of `TaskbarManager.RequestPinAppListEntryAsync`), and
-the AUMID grouping behavior must be confirmed on every supported build family (C-2) — **spike S-3 is
-the go/no-go on which this verdict and ADR-0006 are conditional**.
+Two honest costs: a **one-time pin consent** per launcher (a consent dialog via the
+S-8-validated `RequestPinCurrentAppAsync` route, guided gesture as fallback), and
+dependence on AUMID grouping behavior across builds — **verified by spike S-3 (GO,
+2026-08-15)** and re-confirmed per build family in the qualification matrix (C-2).
 
 ## Hard constraints
 

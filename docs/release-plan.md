@@ -70,7 +70,7 @@ when one commit ends up carrying both the RC and the 1.0 tags. Consequences:
 
 | Gate | Entry criteria |
 |---|---|
-| **0.8.0 (beta / feature freeze)** | All M/S requirements implemented; traceability matrix complete (every M/S requirement → ≥1 QT, Q-5); UT coverage target met (Q-4); user-facing docs (README quick start + screenshots) written; code-signing decision executed (TODO). |
+| **0.8.0 (beta / feature freeze)** | All M/S requirements implemented; traceability matrix complete (every M/S requirement → ≥1 QT, Q-5); UT coverage target met (Q-4); user-facing docs (README quick start + screenshots) written; code-signing decision executed (TODO); **ADR-0011 environment-profile QTs green with zero skips** (UAC-off / built-in-Administrator guard behavior, implemented at 0.7.x) — the no-boundary support claim enters beta measured, not assumed. |
 | **0.9.0 (first RC)** | Zero known defects against Must requirements; full QT suite green — automated tiers via the verification script, `[qt]`/`[interactive]` tiers executed on all supported Windows 11 builds (test-plan matrix); **zero skips**: a Must/Should QT recorded as skipped leaves the matrix incomplete and blocks the gate (ADR-0009); localization complete (en, it, hu). |
 | **1.0.0** | Last RC has soaked with no new defects found (minimum one week of dogfooding); promotion = re-tag the same commit + a verified same-source rebuild (§2.1). |
 

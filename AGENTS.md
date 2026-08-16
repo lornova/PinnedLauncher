@@ -46,8 +46,11 @@ yet); review the documents as the product.
 - **No .NET, no WinUI, no bundled runtimes** (NF-1, ADR-0004): modern C++
   (C++20+), Win32 + COM, at most two executables.
 - **Confused-deputy guard**: the proxy never executes config-derived
-  commands while elevated; elevation applies to the resolved target via
-  `runas` (UC-6).
+  commands **across an elevation boundary** — refuse iff the token's
+  elevation type is `Full`; UAC-off and built-in-Administrator (without Admin
+  Approval Mode) sessions are supported — no boundary exists there and the
+  guard deliberately never fires (UC-6, ADR-0011);
+  elevation applies to the resolved target via `runas`.
 - **Config is the single source of truth**; icons/shortcuts/jump lists are
   derived, regenerable artifacts with persisted lifecycle states
   (architecture §4).

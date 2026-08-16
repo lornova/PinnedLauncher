@@ -9,8 +9,8 @@
 
 The management window is the **only UI the project builds** — everything else on
 screen is OS-drawn (pins, jump lists). It exists solely to *configure* launchers; it
-is **never part of the launch path** (pins launch targets directly or via the
-windowless proxy, with no window involved).
+is **never part of the launch path** (pins launch targets via the windowless
+proxy — uniform flavor B, ADR-0012 — with no window involved).
 
 Non-goals: it is not a launcher itself (no "launch" button as a primary affordance),
 not a dock, not a background service, and it never draws on or near the taskbar.
@@ -110,11 +110,18 @@ flowchart LR
 - ListView (details mode) with the **badged** icon, name, target, and pin status.
 - Pin status is a **best-effort heuristic** (presence of the pinned `.lnk` copy under
   `User Pinned\TaskBar`) — displayed as informational, never blocking (the shell owns
-  the truth; spike S-4 refines detection). The ⚠ state covers both *not pinned yet*
-  and *edited, awaiting re-pin* (§5.2); clicking it opens the pin guide.
+  the truth; spike S-4 refines detection). The ⚠ state displays the persisted
+  `awaiting-pin` / `awaiting-repin` states (architecture §4.3): *not pinned yet* and
+  *edited, awaiting re-pin* (§5.2); clicking it opens the pin guide.
 - Launchers in `pending-removal`/`removing` state (architecture §4) stay listed,
   dimmed, with explicit **Resume removal** / **Cancel removal** actions — the states
-  are persisted in config, so they survive restarts and crashes mid-removal. Terminal
+  are persisted in config, so they survive restarts and crashes mid-removal.
+  *Cancel* from `pending-removal` restores the recorded **origin state** (nothing
+  irreversible has happened); from `removing` it **reconciles then branches** —
+  pinned copy still present → the origin state (an `awaiting-repin` origin keeps its
+  owed re-pin), absent (the unpin already ran) → `awaiting-pin` with artifacts
+  regenerated and the pin re-offered (architecture §4.3) — never a blind return to
+  `active`. Terminal
   `removed` tombstones (full uninstall, UC-13) do **not** appear here; they surface
   only in the uninstall summary, so "the list is empty" and "tombstones are retained"
   are simultaneously true.
@@ -142,7 +149,7 @@ as executable-like merely for being a shortcut:
 | Run as administrator | ✅ | ❌ | ❌ | ❌ | ❌ |
 | Window state | ✅ | ❌ | ⚠ best-effort | ⚠ best-effort | ❌ |
 | Open target's folder (UC-7) | ✅ | ❌ | ✅ | ✅ (itself) | ❌ |
-| Focus-or-launch (UC-6, Could) | ✅ | ⚠ | ❌ | ❌ | ❌ |
+| Focus-or-launch (UC-6, Could — **post-1.0**, [TODO](../TODO.md)) | ✅ | ⚠ | ❌ | ❌ | ❌ |
 
 OK triggers the presenter pipeline (**icon → shortcut → jump list → config commit**,
 with reverse-order rollback on mid-pipeline failure and reconciliation at next start —
@@ -162,7 +169,20 @@ allows it, a short-lived helper assumes the launcher's AUMID and calls
 `RequestPinCurrentAppAsync` from the guide's foreground interaction — gated on
 `IsCurrentAppPinnedAsync` (S-8 saw the dialog re-appear on already-pinned requests) —
 so the consent dialog replaces the gesture, and the watcher below confirms the landed
-pin identically. On unavailable/denied, or in *manual* mode, the gesture flow:
+pin identically. The helper is the **proxy exe's pin-request verb** (architecture §5).
+The mode decides only what happens when the API path is not taken or fails.
+**Initial pin** (create flows, `awaiting-pin` re-offers; re-pin differs — below):
+
+| Outcome | *API-first* (default) | *API-only* | *manual* |
+|---|---|---|---|
+| Runtime detection: API unavailable | gesture flow | parks `awaiting-pin` (⚠, NF-8): message + explicit *Retry*, **no gesture guide** | gesture flow (API never probed) |
+| Consent dialog denied | gesture flow | parks `awaiting-pin`; a denial is a user decision — re-request only on explicit *Retry* | — |
+| Request lands (watcher confirms) | → pinned | → pinned | — |
+| Already pinned (`IsCurrentAppPinnedAsync` gate — **initial pin only**; in re-pin the gate is phase-1 disappearance, below) | request skipped, watcher confirms directly | same | n/a |
+
+*API-only*'s promise is "never walk me through manual gestures" — on failure it
+parks in `awaiting-pin` instead of breaking that promise. In every mode
+the gesture flow, when it runs, is the same:
 `TaskDialogIndirect` with numbered instructions, a button that opens the Apps view
 with the launcher's entry **pre-selected** (`SHOpenFolderAndSelectItems` on
 `shell:AppsFolder\<AUMID>` — S-4-verified, [spike report](spikes/s4-pinflow.md) §7)
@@ -174,25 +194,40 @@ route) sees the pinned copy appear. One timing constraint (S-6, 2026-08-15,
 [report](spikes/s6-elevation.md) §7): a freshly created Start entry is **not
 immediately parseable** in `shell:AppsFolder` (observed `0x80070002` ~30 s after
 install) — the guide polls `ParseName(<AUMID>)` until the entry appears before
-offering the deep-link button, presenting the manual routes meanwhile. In **edit mode** (re-pin, §5.2) the guide is a two-phase state machine with
-explicit unpin instructions first: watch for the old pinned copy's **disappearance**,
-then for the new pin's **reappearance** — the mere presence of the pre-existing pin
-never satisfies it (an icon-only edit would otherwise "succeed" instantly without the
-pin changing). Skippable; re-openable from the ⚠ status. This dialog and
+offering the deep-link button, presenting the manual routes meanwhile. In **edit mode** (re-pin, `awaiting-repin`, §5.2) the guide is a two-phase state
+machine — **unpin leg**, then **pin leg**. The initial table's already-pinned gate
+does *not* apply here: the old pin's presence is exactly what phase 1 must
+eliminate, and its mere presence never satisfies the guide (an icon-only edit would
+otherwise "succeed" instantly without the pin changing). Phase 1, every mode:
+**programmatic unpin first** — S-4's `RemoveFromList` on the Start-menu source,
+UC-3's fixed mechanism, silent and gesture-free. If the call fails, *API-first* and
+*manual* show explicit unpin instructions; *API-only* **parks instead** — the entry
+stays `awaiting-repin` with an explicit *Retry* and no gesture, keeping the mode
+deterministic. Phase 2, on the old copy's observed **disappearance** — a persisted
+transition `awaiting-repin` → `awaiting-pin`, atomic with the observation
+(architecture §4.3), so the phase survives a restart — the pin leg proceeds exactly
+as an initial pin per the configured mode (API request in *API-first* / *API-only*;
+gesture guide in *manual* or on API-first fallback), watching for the new pin's
+**reappearance**. Consequences: *API-only* edits are fully gesture-free end-to-end —
+a phase-2 denial parks in `awaiting-pin` (phase 1 done, no pin present) with an
+explicit *Retry* of the pin leg alone; and an API error or an **inconclusive
+watcher** never yields `active` — the entry keeps its phase state, flagged, until
+the new copy is positively observed. Skippable; re-openable from the ⚠ status. This dialog and
 the QT harness prompt (ADR-0009) share the same helper — one implementation, two uses.
 
 ### 5.4 Settings (UC-10)
 
-Deliberately short, matching the requirement that Windows owns look & feel: default
-launch behavior (plain launch vs the optional focus-or-launch, per-launcher
-overridable — UC-10), default badge on/off + corner, config location + *Open* /
+Deliberately short, matching the requirement that Windows owns look & feel: the
+**pin-flow mode** (*API-first* default / *API-only* / *manual* — §5.3, S-8), default
+badge on/off + corner, config location + *Open* /
 *Export…* / *Import…* (import shows a **preview** of targets/arguments/elevation —
 including, in replace mode, the launchers that will be *removed* via the standard UC-3
 flow — and a replace-or-merge choice before applying; UC-8), language (NF-11), and
 ***Remove all launchers…*** — the uninstall entry point (UC-13). No theme settings —
 the window follows the system. No AUMID scheme setting — it is fixed by design
-(UC-10). No tray/autostart settings — the optional tray helper is post-1.0
-([TODO](../TODO.md)).
+(UC-10). No launch-behavior setting — focus-or-launch is parked post-1.0 at very
+low priority ([TODO](../TODO.md)). No tray/autostart settings — the optional tray
+helper is post-1.0 ([TODO](../TODO.md)).
 
 ## 6. Platform conformance
 

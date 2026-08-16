@@ -12,6 +12,18 @@
   prefix-tolerantly, revalidate per build family as required below. Hygiene
   defined and demonstrated: reserved `PinnedLauncher.Test.*` namespace,
   programmatic leftover sweep, gesture-free teardown.
+- Amended: 2026-08-16 — the trompeloeil interaction example "`SHChangeNotify`
+  fired after the source shortcut was rewritten" (Decision, mocking paragraph)
+  predates spike S-5, which found every such notification ineffective and
+  **rejected** the live-refresh enhancement
+  ([report](../spikes/s5-editprop.md) §7). The example is **retired**: no
+  product code fires `SHChangeNotify` for pin refresh, so no test should
+  expect it. The mocking guidance itself is unchanged.
+- Amended: 2026-08-16 — carve-out to the skip rule in the Decision ("a skipped
+  Must/Should QT … blocks the 0.9/1.0 release gates"): the **ADR-0011
+  environment-profile QTs** (UAC-off / built-in-Administrator guard behavior)
+  additionally block the **0.8 gate** — green with zero skips before beta
+  (maintainer decision 2026-08-16; release-plan §3).
 
 ## Context
 

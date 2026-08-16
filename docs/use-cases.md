@@ -63,39 +63,52 @@ Per-launcher: display name, icon override, badge on/off, command-line arguments,
 working directory, "run as administrator" flag, "run minimized/maximized" flag.
 Reached from the pin's own right-click menu (UC-7 → *Change name or icon…*) or from the
 management window. Name/icon changes regenerate the proxy artifacts; because updating
-an **existing pin** has no documented API, the flow guides a quick unpin → re-pin
-(architecture §4.2; spike S-5, 2026-08-15: no documented propagation mechanism
-exists — the guided re-pin is the flow, not a fallback).
+an **existing pin** has no documented API, the flow re-pins: a programmatic unpin
+(UC-3's mechanism), then the pin leg — both legs' fallbacks governed by the
+pin-flow mode (architecture §4.2, management-window §5.3; spike S-5, 2026-08-15:
+no documented propagation mechanism exists — the re-pin is the flow, not a
+fallback).
 
 ### UC-6 — Modified launch
 On a launcher-only pin every unmodified click starts the shortcut.
 - **Elevated launch** is a per-launcher feature (the run-as-administrator property,
   UC-5, and the jump-list *Run as administrator* task, UC-7; applicable target kinds
-  only per the capability matrix). Implementation rule: the **medium-integrity proxy
-  invokes the `runas` verb on the resolved target**, so the UAC prompt names the
-  actual program being elevated — never the proxy. Verified in spike S-6
+  only per the capability matrix). Implementation rule: the proxy, running at the
+  session's default integrity, **invokes the `runas` verb on the resolved target**,
+  so the UAC prompt names the actual program being elevated — never the proxy (in
+  sessions without an elevation boundary the target simply runs, promptless, per
+  ADR-0011). Verified in spike S-6
   (2026-08-15, [report](spikes/s6-elevation.md)): exactly one UAC prompt naming the
   resolved target (file name for an unsigned target, verified display name for a
   signed one), the target runs at high IL as its own taskbar button, and a declined
   prompt ends in a silent `ERROR_CANCELLED` exit — no error UI, no lingering button.
 - The shell's native **Ctrl+Shift+click** on a pin elevates the pin's target — i.e.
-  *the proxy itself*. An elevated generic proxy that then executes instructions read
-  from user-writable config would be a **confused deputy** (a medium-integrity process
-  could rewrite the config between click and UAC consent, running attacker-chosen code
-  under a prompt that names our trusted proxy). This path is therefore **not
-  supported**: a proxy that finds itself started elevated refuses to consume the
-  config and explains how to use the supported elevation instead (behavior and
-  detection verified in spike S-6, 2026-08-15: Ctrl+Shift+click, the jump list's own
-  *run as administrator* on the entry name — which the shell does offer — and the
-  programmatic `runas` verb all yield a full-token high-IL proxy, detected and
-  refused before the config is read; [report](spikes/s6-elevation.md)).
+  *the proxy itself*. A UAC-elevated generic proxy that then executes instructions
+  read from user-writable config would be a **confused deputy** (a medium-integrity
+  process could rewrite the config between click and UAC consent, running
+  attacker-chosen code under a prompt that names our trusted proxy). The proxy
+  therefore **never executes config-derived commands across an elevation boundary**
+  (ADR-0011): if its token shows it was granted a full token through UAC elevation
+  (elevation type `Full`), it refuses to consume the config before reading it and
+  explains how to use the supported elevation instead. In sessions with **no
+  elevation boundary** — UAC disabled, or the built-in Administrator without Admin
+  Approval Mode, where every process holds elevation type `Default` — the guard
+  deliberately never fires and the launcher is fully **supported**: no consent
+  prompt exists there to launder, and config-writing code already holds full rights
+  (threat model in ADR-0011). Behavior and detection verified under UAC in spike
+  S-6, 2026-08-15: Ctrl+Shift+click, the jump list's own *run as administrator* on
+  the entry name — which the shell does offer — and the programmatic `runas` verb
+  all yield a full-token high-IL proxy, detected and refused before the config is
+  read ([report](spikes/s6-elevation.md)); the no-boundary environments are
+  qualified at 0.7.x (ADR-0011).
 - Middle-click / Shift+click are natively equivalent to a plain click on a
   launcher-only pin (they re-launch). Whether a launch yields a *new instance* is
   ultimately the target's decision — single-instance applications will refuse; the
   launcher requests a launch, it cannot guarantee an instance.
 
 An optional **focus-or-launch** proxy behavior (find an existing target window before
-launching) is a *Could* refinement, configurable per launcher (UC-10). This section is
+launching) is a *Could* refinement **parked post-1.0 at very low priority**
+([TODO](../TODO.md); F-16 reserved at promotion). This section is
 the normative source for click semantics; [ui-reference.md](ui-reference.md) is
 background only.
 
@@ -120,21 +133,27 @@ from it (architecture §4). Export = copy the config file. Import = validated
 regeneration: the app shows a **preview** of what will be created (targets, arguments,
 elevation flags) before applying, offers replace or merge explicitly, validates paths,
 and re-runs the pin guide for entries needing a pin — the pin gestures themselves
-cannot be imported, the shell requires the user. In **replace** mode, existing
+cannot be imported, the shell requires the user. Imported entries enter
+`awaiting-pin`; the first reconciliation promotes to `active` any entry whose pin
+is already observed **and** whose pin-visible fields (name / icon / badge) match
+that pin — an overlapping import that changes pin-visible fields enters
+`awaiting-repin` instead, UC-5's re-pin rule applying to imports too. In merge
+mode existing entries keep their current state (architecture §4.3). In **replace** mode, existing
 launchers absent from the imported file are shown in the preview as removals and go
 through the standard removal flow (UC-3: unpin first, *pending removal* if deferred) —
 never a silent config swap that strands live pins.
 
 ### UC-9 — Start with Windows (optional, post-1.0)
 The pins work with **no process of ours running** — each is a shortcut that launches
-its target, and even the optional focus-or-launch behavior (UC-6) runs in the
-**per-click transient proxy**, not in a resident process. A background process exists
+its target, and even the optional focus-or-launch behavior (UC-6, post-1.0) would
+run in the **per-click transient proxy**, not in a resident process. A background process exists
 only for the optional post-1.0 tray icon (quick settings access); if that is ever
 enabled it starts per-user at logon, silently.
 
 ### UC-10 — Global settings
-Launcher-list management, default launch behavior (plain launch vs the optional
-focus-or-launch, per-launcher overridable — UC-6), default badge. The **AUMID scheme
+Launcher-list management, default badge; the launch-behavior setting (plain launch
+vs the optional focus-or-launch, UC-6) is **parked post-1.0** with the feature
+([TODO](../TODO.md)). The **AUMID scheme
 is fixed, not a setting** — changing it would orphan every existing pin and jump list.
 Start-with-Windows applies only to the optional tray helper (F-11). Icon size,
 spacing, alignment, theme and multi-monitor behavior are **native taskbar settings**

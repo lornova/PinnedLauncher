@@ -11,6 +11,15 @@
   [feasibility §3](../feasibility.md) item 2's open evaluation, TODO.md's
   S-8 item.
 - Throwaway artifacts: [`spikes/s8-pinapi/`](../../spikes/s8-pinapi/README.md).
+- Correction (2026-08-16, from the pre-P0.3 review): two details below are
+  superseded by later decisions. (1) §7's configurability rule is **scoped**: it
+  covers alternative mechanisms *whose user experience differs* (consent dialog
+  vs manual gesture); invisible fallback orderings with no experiential
+  difference (e.g. UC-3's silent programmatic unpin, gesture only on failure)
+  stay fixed flows — architecture §5 governs. (2) The hygiene sweep described
+  below matches `PinnedLauncher.*` — too broad, per the S-9 report correction:
+  sweeps must match **`PinnedLauncher.Test.*` only** and exclude the product
+  namespace. The text below stays as recorded; this note governs.
 
 ## 1. Mechanism model and questions under test
 

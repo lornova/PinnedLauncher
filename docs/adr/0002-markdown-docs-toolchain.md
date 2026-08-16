@@ -1,6 +1,9 @@
 # ADR-0002 — Markdown + Mermaid + ADRs instead of Sphinx/reST
 
 - Status: accepted
+- Amended: 2026-08-16 — factual correction: the stable-ID families are `F-n`,
+  `NF-n`, `Q-n`, `C-n`; quality goals (`Q-n`) were omitted from the Decision's
+  list although requirements.md defines them and later ADRs reference them.
 - Date: 2026-08-13
 
 ## Context

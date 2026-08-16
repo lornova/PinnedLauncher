@@ -10,6 +10,12 @@
   (icon-artifact **path-stability rule**, → `docs/design/config-schema.md`),
   TODO post-1.0 icon-freshness watcher.
 - Throwaway artifacts: [`spikes/s5-editprop/`](../../spikes/s5-editprop/README.md).
+- Correction (2026-08-16, from the pre-P0.3 review): §7's "guided re-pin"
+  phrasing predates the later pin-flow decisions — the re-pin remains the flow,
+  but its unpin leg is **programmatic first** (S-4 `RemoveFromList`, UC-3's
+  mechanism) and the pin leg follows the configured pin-flow mode; gestures are
+  the fallback, not the definition (architecture §4.2, management-window §5.3).
+  The text below stays as recorded; this note governs.
 
 ## 1. Mechanism model and questions under test
 

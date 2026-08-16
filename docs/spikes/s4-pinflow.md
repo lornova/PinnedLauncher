@@ -4,7 +4,7 @@
 - Status: **complete — accepted outcome recorded 2026-08-15 (§7)**; executed via
   the guided runner, raw data in `spikes/s4-pinflow/results/s4-run-20260815-124137.json`.
 - Feeds: [UC-3](../use-cases.md) (programmatic-unpin decision),
-  [management-window §5.3](../management-window.md) pin guide and its §9.2
+  [management-window §5.3](../management-window.md) pin guide and its §8.2
   deep-link question, management-window §3 pin-status heuristic,
   [architecture §4](../architecture.md#4-shared-core) lifecycle reconciliation,
   ADR-0009 file-system oracle, risk R-2 (pin friction).
@@ -20,7 +20,7 @@
   - **R-C** deep-link: `s4select.exe <AUMID>` calls
     `SHOpenFolderAndSelectItems` on `shell:AppsFolder\<AUMID>` — if the Apps
     view opens with our entry pre-selected, the guide's residual gesture is one
-    right-click (resolves management-window §9.2).
+    right-click (resolves management-window §8.2).
   - **R-D** drag the `.lnk` onto the taskbar (drop-to-pin affordance).
 - **Q2 — detection reliability.** Does the `User Pinned\TaskBar` `.lnk` copy
   appear/disappear immediately on pin/unpin, on every route? How does the
@@ -39,7 +39,7 @@
 
 Not a go/no-go. The spike closes when each question has a recorded answer and
 the design docs are updated: Q1 → pin-guide flow decided (management-window
-§5.3, §9.2 resolved); Q2 → reliability statement for the heuristic + oracle;
+§5.3, §8.2 resolved); Q2 → reliability statement for the heuristic + oracle;
 Q3 → UC-3 branch decided.
 
 ## 3. Environment
@@ -127,7 +127,7 @@ the corresponding §6.2 rows per route.
 |---|---|---|---|
 | R-A Start All apps | ✅ | 3 (Start → folder → right-click → pin) | |
 | R-B Explorer context menu | ✅ | 2 from an open Explorer window | Caveat: this machine has classic context menus re-enabled; on stock Win11 the option may sit under "Show more options" (+1 click) |
-| R-C deep-link (`s4select`) | ✅ **entry pre-selected** | 2 after the app opens the view itself (right-click → pin) | All three HRESULTs S_OK; the Apps view opened with `S4-1 pin test` selected — resolves management-window §9.2 affirmatively. Filesystem variant equally works (Explorer with the `.lnk` selected) |
+| R-C deep-link (`s4select`) | ✅ **entry pre-selected** | 2 after the app opens the view itself (right-click → pin) | All three HRESULTs S_OK; the Apps view opened with `S4-1 pin test` selected — resolves management-window §8.2 affirmatively. Filesystem variant equally works (Explorer with the `.lnk` selected) |
 | R-D drag to taskbar | ✅ pinned | one drag | Drop onto an empty taskbar area pinned the `.lnk` (26200.9168) |
 
 ### 6.2 Q2 — detection signals
@@ -164,7 +164,7 @@ detection.
 - **Q1 decision — pin-guide flow:** the guide calls
   `SHOpenFolderAndSelectItems` on `shell:AppsFolder\<AUMID>`, which opens the
   Apps view with the launcher's entry **pre-selected**; the user's residual
-  gesture is right-click → Pin to taskbar. Management-window §9.2 resolved
+  gesture is right-click → Pin to taskbar. Management-window §8.2 resolved
   affirmatively (selection, not just folder-open). Fallbacks, in order:
   drag-to-taskbar (works, one drag), Start All-apps route (3 clicks).
 - **Q2 statement — detection:** the `User Pinned\TaskBar` `.lnk` copy is a

@@ -10,6 +10,13 @@
   ([implementation-plan](../implementation-plan.md) P2 row), F-2/NF-8 (the
   invariant and regression the oracle asserts), architecture §9's S-9 line.
 - Throwaway artifacts: [`spikes/s9-uiaoracle/`](../../spikes/s9-uiaoracle/README.md).
+- Correction (2026-08-16, from the pre-P0.3 review): the recovery-sweep filter
+  recorded below as `PinnedLauncher.*` is **too broad** — on a dogfooding
+  profile it would select and unpin real product pins
+  (`PinnedLauncher.Proxy.*`). Binding rule for the P2 test plan and the harness
+  helper: hygiene sweeps match **`PinnedLauncher.Test.*` only** and explicitly
+  exclude the product namespace. The occurrences below (§1 Q3, §5.1, §7) stay
+  as recorded; this header note governs.
 
 ## 1. Mechanism model and questions under test
 
